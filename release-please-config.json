@@ -3,7 +3,7 @@
   "release-type": "node",
   "packages": {
     ".": {},
-	"packages/publish-docs": {}
+    "packages/publish-docs": {}
   },
   "plugins": [
     {
