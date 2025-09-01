@@ -10,7 +10,8 @@
     "clean": "pnpm -r clean",
     "lint": "biome check && pnpm -r run lint",
     "lint:fix": "biome check --write && pnpm -r run lint",
-    "test": "pnpm -r test"
+    "test": "pnpm -r test",
+    "test:coverage": "pnpm -r run test:coverage"
   },
   "keywords": [
     "monorepo",

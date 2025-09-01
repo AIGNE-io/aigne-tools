@@ -1,0 +1,73 @@
+name: Release
+
+env:
+  NODE_OPTIONS: "--max_old_space_size=6144"
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.AIGNE_FRAMEWORK_RELEASE_PLEASE_TOKEN}}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v3
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          version: 10
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          node-version: 23
+          cache: pnpm
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Install dependencies
+        run: |
+          pnpm install
+          pnpm exec playwright install --with-deps
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Build
+        if: ${{ steps.release.outputs.release_created }}
+        run: pnpm build
+
+      - name: Lint
+        run: pnpm lint
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Test
+        run: pnpm test:coverage
+        if: ${{ steps.release.outputs.release_created }}
+
+      - uses: codecov/codecov-action@v5
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Publish to NPM
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
+          pnpm -F "@aigne/*" publish --access public --no-git-checks
