@@ -1,0 +1,30 @@
+{
+  "name": "aigne-tools",
+  "version": "0.0.1",
+  "private": true,
+  "description": "AiGNE Tools Monorepo",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm -r dev",
+    "clean": "pnpm -r clean",
+    "lint": "biome check && pnpm -r run lint",
+    "lint:fix": "biome check --write && pnpm -r run lint",
+    "test": "pnpm -r test"
+  },
+  "keywords": [
+    "monorepo",
+    "aigne",
+    "tools"
+  ],
+  "author": "Arcblock <blocklet@arcblock.io> https://github.com/blocklet",
+  "license": "MIT",
+  "devDependencies": {
+    "@biomejs/biome": "^2.1.2",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=20.15",
+    "pnpm": ">=10.2.1"
+  }
+}
