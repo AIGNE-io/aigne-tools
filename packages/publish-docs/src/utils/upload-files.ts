@@ -287,7 +287,7 @@ export async function uploadFiles(options: UploadFilesOptions): Promise<UploadFi
                 retries: 3,
                 onFailedAttempt: (error) => {
                   console.warn(
-                    `Upload attempt ${error.attemptNumber} failed for ${filename}. Retries left: ${error.retriesLeft}`,
+                    `File upload attempt ${error.attemptNumber} failed for "${filename}". Remaining retries: ${error.retriesLeft}`,
                   );
                   if (error.retriesLeft === 0) {
                     console.error(`All retry attempts exhausted for ${filename}`);
