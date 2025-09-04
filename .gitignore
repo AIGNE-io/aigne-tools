@@ -17,3 +17,5 @@ tmp/
 .vscode
 
 packages/*/lib
+
+*.tsbuildinfo

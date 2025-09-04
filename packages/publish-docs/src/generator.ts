@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { marked, type Tokens, type TokensList } from "marked";
+import pLimit from "p-limit";
 import { Converter, type ConverterOptions } from "./converter/index.js";
 import { slugify } from "./utils/slugify.js";
 
@@ -23,6 +24,7 @@ export interface GeneratorOptions {
   slugPrefix?: string;
   slugWithoutExt?: boolean;
   uploadConfig?: ConverterOptions["uploadConfig"];
+  concurrency?: number;
 }
 
 export class Generator {
@@ -31,6 +33,7 @@ export class Generator {
   private sidebarPath: string;
   private converter: Converter;
   private slugWithoutExt: boolean;
+  private concurrency: number;
 
   constructor(options: GeneratorOptions) {
     this.sidebarPath = options.sidebarPath;
@@ -42,6 +45,7 @@ export class Generator {
       uploadConfig: options.uploadConfig,
     });
     this.slugWithoutExt = options.slugWithoutExt ?? true;
+    this.concurrency = options.concurrency ?? 3;
   }
 
   private resolveLinkFilePath(link: string): string {
@@ -145,7 +149,9 @@ export class Generator {
     const content = await readFile(this.sidebarPath, "utf-8");
     const tokens = marked.lexer(content);
     const tree = this.parseSidebar(tokens as TokensList);
-    await Promise.all(tree.map((x) => this.fillInfo(x)));
+    
+    const limit = pLimit(this.concurrency);
+    await Promise.all(tree.map((x) => limit(() => this.fillInfo(x))));
 
     if (this.converter.blankFilePaths && this.converter.blankFilePaths.length > 0) {
       console.warn("Blank files:", this.converter.blankFilePaths);
