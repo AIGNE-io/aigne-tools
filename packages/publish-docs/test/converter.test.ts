@@ -1,4 +1,4 @@
-import { afterAll, afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 
 // Mock dependencies first - must be before imports
 const mockFindLocalImages = mock();
@@ -32,10 +32,6 @@ describe("Converter", () => {
     console.warn = originalConsoleWarn;
   });
 
-  afterAll(() => {
-    // Clean up module mocks after all tests in this file
-    mock.restore();
-  });
 
   describe("constructor", () => {
     test("should initialize with default options", () => {

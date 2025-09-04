@@ -37,7 +37,7 @@
   "scripts": {
     "lint": "tsc --noEmit",
     "build": "tsc --build scripts/tsconfig.build.json",
-    "test": "bun --cwd test test",
+    "test": "bun test",
     "test:coverage": "bun --cwd test test --coverage --coverage-reporter=lcov --coverage-reporter=text",
     "clean": "rimraf lib test/coverage",
     "prepublishOnly": "run-s clean build"

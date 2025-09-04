@@ -1,4 +1,4 @@
-import { afterAll, afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 import YAML from "yaml";
 
 // Mock dependencies first
@@ -68,10 +68,6 @@ describe("upload-files", () => {
     console.error = originalConsoleError;
   });
 
-  afterAll(() => {
-    // Clean up module mocks after all tests in this file
-    mock.restore();
-  });
 
   describe("uploadFiles", () => {
     const baseOptions: UploadFilesOptions = {
