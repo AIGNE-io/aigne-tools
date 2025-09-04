@@ -290,7 +290,9 @@ export async function uploadFiles(options: UploadFilesOptions): Promise<UploadFi
                     `File upload attempt ${error.attemptNumber} failed for "${filename}". Remaining retries: ${error.retriesLeft}`,
                   );
                   if (error.retriesLeft === 0) {
-                    console.error(`All retry attempts exhausted for ${filename}`);
+                    console.error(
+                      `File upload failed - all retry attempts exhausted for "${filename}"`,
+                    );
                   }
                 },
               },
@@ -305,7 +307,10 @@ export async function uploadFiles(options: UploadFilesOptions): Promise<UploadFi
 
             return result;
           } catch (error) {
-            console.error(`Error uploading ${filename} after all retries:`, error);
+            console.error(
+              `File upload failed - error uploading "${filename}" after all retries:`,
+              error,
+            );
             return {
               filePath,
               url: "",
