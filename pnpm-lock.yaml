@@ -11,6 +11,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.1.2
         version: 2.2.2
+      bun-types:
+        specifier: ^1.2.21
+        version: 1.2.21(@types/react@18.3.24)
       typescript:
         specifier: ^5.8.3
         version: 5.9.2
@@ -370,6 +373,11 @@ packages:
 
   buffer-equal-constant-time@1.0.1:
     resolution: {integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==}
+
+  bun-types@1.2.21:
+    resolution: {integrity: sha512-sa2Tj77Ijc/NTLS0/Odjq/qngmEPZfbfnOERi0KRUYhT9R8M4VBioWVmMWE5GrYbKMc+5lVybXygLdibHaqVqw==}
+    peerDependencies:
+      '@types/react': ^19
 
   bundle-name@4.1.0:
     resolution: {integrity: sha512-tjwM5exMg6BGRI+kNmTntNsvdZS1X8BFYS6tnJ2hdH0kVxM6/eVZ2xy+FqStSWvYmtfFMDLIxurorHwDKfDz5Q==}
@@ -1652,6 +1660,11 @@ snapshots:
       concat-map: 0.0.1
 
   buffer-equal-constant-time@1.0.1: {}
+
+  bun-types@1.2.21(@types/react@18.3.24):
+    dependencies:
+      '@types/node': 24.3.0
+      '@types/react': 18.3.24
 
   bundle-name@4.1.0:
     dependencies:
