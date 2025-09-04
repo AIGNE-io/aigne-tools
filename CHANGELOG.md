@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.1.0...aigne-tools-v0.1.1) (2025-09-04)
+
+
+### Bug Fixes
+
+* remove useless code ([1c5d0a8](https://github.com/AIGNE-io/aigne-tools/commit/1c5d0a88513a1f8e8cf7472c92286a0f0917ebc6))
+
 ## [0.1.0](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.0.1...aigne-tools-v0.1.0) (2025-09-04)
 
 
