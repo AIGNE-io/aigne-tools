@@ -274,23 +274,26 @@ export async function uploadFiles(options: UploadFilesOptions): Promise<UploadFi
         const uploadPromise = (async (): Promise<UploadResult> => {
           try {
             const result = await pRetry(
-              () => performSingleUpload(
-                filePath,
-                fileHash,
-                uploadEndpoint,
-                accessToken,
-                mountPoint,
-                url,
-              ),
+              () =>
+                performSingleUpload(
+                  filePath,
+                  fileHash,
+                  uploadEndpoint,
+                  accessToken,
+                  mountPoint,
+                  url,
+                ),
               {
                 retries: 3,
                 onFailedAttempt: (error) => {
-                  console.warn(`Upload attempt ${error.attemptNumber} failed for ${filename}. Retries left: ${error.retriesLeft}`);
+                  console.warn(
+                    `Upload attempt ${error.attemptNumber} failed for ${filename}. Retries left: ${error.retriesLeft}`,
+                  );
                   if (error.retriesLeft === 0) {
                     console.error(`All retry attempts exhausted for ${filename}`);
                   }
                 },
-              }
+              },
             );
 
             // Update cache asynchronously with mutex

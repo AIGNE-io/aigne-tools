@@ -149,7 +149,7 @@ export class Generator {
     const content = await readFile(this.sidebarPath, "utf-8");
     const tokens = marked.lexer(content);
     const tree = this.parseSidebar(tokens as TokensList);
-    
+
     const limit = pLimit(this.concurrency);
     await Promise.all(tree.map((x) => limit(() => this.fillInfo(x))));
 
