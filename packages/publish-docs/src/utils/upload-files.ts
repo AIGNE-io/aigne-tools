@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import pLimit from "p-limit";
+import pRetry from "p-retry";
 import YAML from "yaml";
 import { DISCUSS_KIT_DID, MEDIA_KIT_DID } from "../constants.js";
 import { getComponentMountPoint } from "./get-component-mount-point.js";
@@ -272,13 +273,29 @@ export async function uploadFiles(options: UploadFilesOptions): Promise<UploadFi
         // Create upload promise and cache it
         const uploadPromise = (async (): Promise<UploadResult> => {
           try {
-            const result = await performSingleUpload(
-              filePath,
-              fileHash,
-              uploadEndpoint,
-              accessToken,
-              mountPoint,
-              url,
+            const result = await pRetry(
+              () =>
+                performSingleUpload(
+                  filePath,
+                  fileHash,
+                  uploadEndpoint,
+                  accessToken,
+                  mountPoint,
+                  url,
+                ),
+              {
+                retries: 3,
+                onFailedAttempt: (error) => {
+                  console.warn(
+                    `File upload attempt ${error.attemptNumber} failed for "${filename}". Remaining retries: ${error.retriesLeft}`,
+                  );
+                  if (error.retriesLeft === 0) {
+                    console.error(
+                      `File upload failed - all retry attempts exhausted for "${filename}"`,
+                    );
+                  }
+                },
+              },
             );
 
             // Update cache asynchronously with mutex
@@ -290,7 +307,10 @@ export async function uploadFiles(options: UploadFilesOptions): Promise<UploadFi
 
             return result;
           } catch (error) {
-            console.error(`Error uploading ${filename}:`, error);
+            console.error(
+              `File upload failed - error uploading "${filename}" after all retries:`,
+              error,
+            );
             return {
               filePath,
               url: "",

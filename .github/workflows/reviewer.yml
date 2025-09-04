@@ -32,6 +32,7 @@ jobs:
           disable_review: false
           review_simple_changes: false
           review_comment_lgtm: false
+          suggest_pr_title: true
           path_filters: |
             !docs/*
             !**/*.md
