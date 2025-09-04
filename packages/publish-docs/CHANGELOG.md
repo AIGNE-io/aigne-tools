@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.0](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.8.0...publish-docs-v0.9.0) (2025-09-04)
+
+
+### Features
+
+* initialize aigne-tools monorepo with publish-docs package ([4e74a99](https://github.com/AIGNE-io/aigne-tools/commit/4e74a99845f3b63e5847e58b16db7bbac54590d5))
+
+
+### Bug Fixes
+
+* **core:** more stable publish with retry and concurrency limits ([#2](https://github.com/AIGNE-io/aigne-tools/issues/2)) ([02b1915](https://github.com/AIGNE-io/aigne-tools/commit/02b19150d998175b129d0a7ab653b2f044c6ca62))
+
 ## [0.8.0](https://github.com/AIGNE-io/aigne-framework/compare/publish-docs-v0.7.0...publish-docs-v0.8.0) (2025-08-28)
 
 
