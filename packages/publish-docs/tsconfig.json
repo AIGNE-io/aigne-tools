@@ -1,6 +1,8 @@
 {
   "extends": "../../tsconfig.json",
-  "compilerOptions": {},
+  "compilerOptions": {
+    "types": ["bun-types"]
+  },
   "exclude": ["node_modules", "lib"],
   "include": ["src", "test"]
 }
