@@ -13,7 +13,6 @@ import type {
 } from "lexical";
 
 import { createEditor, DecoratorNode } from "lexical";
-import { getLocalImageDimensions } from "../../utils/image-utils.js";
 
 // Define JSX namespace for headless environment
 declare namespace JSX {
@@ -45,23 +44,10 @@ export interface ImagePayload {
 function convertImageElement(domNode: Node): null | DOMConversionOutput {
   if (domNode) {
     const { alt: altText, src } = domNode as HTMLImageElement;
-    let width: number | undefined;
-    let height: number | undefined;
-
-    // Get dimensions for local images
-    if (src) {
-      const dimensions = getLocalImageDimensions(src);
-      if (dimensions) {
-        width = dimensions.width;
-        height = dimensions.height;
-      }
-    }
 
     const node = $createImageNode({
       altText,
       src,
-      width,
-      height,
     });
     return { node };
   }

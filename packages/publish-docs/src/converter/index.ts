@@ -18,7 +18,8 @@ import {
   TextNode,
 } from "lexical";
 import { marked, type RendererObject } from "marked";
-import { findLocalImages, isRemoteUrl } from "../utils/image-finder.js";
+import { findImagePath, findLocalImages, isRemoteUrl } from "../utils/image-finder.js";
+import { getLocalImageDimensions } from "../utils/image-utils.js";
 import { slugify } from "../utils/slugify.js";
 import { type UploadFilesOptions, uploadFiles } from "../utils/upload-files.js";
 import { CustomComponentNode } from "./nodes/custom-component-node.js";
@@ -267,11 +268,26 @@ export class Converter {
       // Update image sources in the content
       const updateImageSources = (node: any): void => {
         if (node.type === "image" && node.src && !isRemoteUrl(node.src)) {
+          const imageLocalPath = node.src;
+
           const uploadedUrl = urlMapping.get(node.src);
           if (uploadedUrl) {
             node.src = uploadedUrl;
           } else {
             console.warn(`No uploaded URL found for image: ${decodeURIComponent(node.src || "")}`);
+          }
+
+          // update image width and height
+          const imagePath = findImagePath(imageLocalPath, {
+            mediaFolder: this.uploadConfig?.mediaFolder,
+            markdownFilePath: filePath,
+          });
+          if (imagePath) {
+            const dimensions = getLocalImageDimensions(imagePath);
+            if (dimensions) {
+              node.width = dimensions.width;
+              node.height = dimensions.height;
+            }
           }
         }
 
