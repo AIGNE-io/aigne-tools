@@ -102,6 +102,7 @@ export class CustomComponentNode extends DecoratorBlockNode {
 
   static override importDOM(): DOMConversionMap | null {
     return {
+      "x-code": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
       "x-card": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
       "x-cards": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
       "x-code-group": () => ({ conversion: convertCustomComponentElement, priority: 1 }),

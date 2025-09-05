@@ -47,6 +47,9 @@ importers:
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
+      he:
+        specifier: ^1.2.0
+        version: 1.2.0
       image-size:
         specifier: ^2.0.2
         version: 2.0.2
@@ -84,6 +87,9 @@ importers:
         specifier: ^3.25.67
         version: 3.25.76
     devDependencies:
+      '@types/he':
+        specifier: ^1.2.3
+        version: 1.2.3
       '@types/jsdom':
         specifier: ^21.1.7
         version: 21.1.7
@@ -302,6 +308,9 @@ packages:
     resolution: {integrity: sha512-Zx1rabMm/Zjk7n7YQMIQLUN+tqzcg1xqcgNpEHSfK1GA8QMPXCPvXWFT3ZDC4tfZOSy/YIqpVUyWZAomFqRa+g==}
     peerDependencies:
       yjs: '>=13.5.22'
+
+  '@types/he@1.2.3':
+    resolution: {integrity: sha512-q67/qwlxblDzEDvzHhVkwc1gzVWxaNxeyHUBF4xElrvjL11O+Ytze+1fGpBHlr/H9myiBUaUXNnNPmBHxxfAcA==}
 
   '@types/jsdom@21.1.7':
     resolution: {integrity: sha512-yOriVnggzrnQ3a9OKOCxaVuSug3w3/SbOj5i7VwXWZEyUNl3bLF9V3MfxGbZKuwqJOQyRfqXyROBB1CoZLFWzA==}
@@ -632,6 +641,10 @@ packages:
   hasown@2.0.2:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
+
+  he@1.2.0:
+    resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
+    hasBin: true
 
   hosted-git-info@2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
@@ -1600,6 +1613,8 @@ snapshots:
       lexical: 0.33.1
       yjs: 13.6.27
 
+  '@types/he@1.2.3': {}
+
   '@types/jsdom@21.1.7':
     dependencies:
       '@types/node': 24.3.0
@@ -2003,6 +2018,8 @@ snapshots:
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
+
+  he@1.2.0: {}
 
   hosted-git-info@2.8.9: {}
 
