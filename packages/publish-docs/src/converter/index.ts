@@ -187,9 +187,35 @@ export class Converter {
     const localImageSources: string[] = [];
 
     const collectImageSources = (node: any): void => {
+      // image node
       if (node.type === "image" && node.src && !isRemoteUrl(node.src)) {
         localImageSources.push(node.src);
       }
+
+      // x-component node
+      if (node.type === "x-component") {
+        // Collect images from custom components
+        if (
+          node.data?.component === "card" &&
+          node.data?.properties?.image &&
+          !isRemoteUrl(node.data?.properties?.image)
+        ) {
+          localImageSources.push(node.data?.properties?.image);
+        }
+
+        if (node.data?.component === "cards") {
+          node.data?.properties?.children?.forEach((child: any) => {
+            if (
+              child.component === "card" &&
+              child.properties?.image &&
+              !isRemoteUrl(child.properties?.image)
+            ) {
+              localImageSources.push(child.properties?.image);
+            }
+          });
+        }
+      }
+
       if (node.children) {
         node.children.forEach(collectImageSources);
       }
@@ -246,6 +272,42 @@ export class Converter {
             node.src = uploadedUrl;
           } else {
             console.warn(`No uploaded URL found for image: ${decodeURIComponent(node.src || "")}`);
+          }
+        }
+
+        if (node.type === "x-component") {
+          if (
+            node.data?.component === "card" &&
+            node.data?.properties?.image &&
+            !isRemoteUrl(node.data?.properties?.image)
+          ) {
+            const uploadedUrl = urlMapping.get(node.data?.properties?.image);
+            if (uploadedUrl) {
+              node.data.properties.image = uploadedUrl;
+            } else {
+              console.warn(
+                `No uploaded URL found for image: ${decodeURIComponent(node.data?.properties?.image || "")}`,
+              );
+            }
+          }
+
+          if (node.data?.component === "cards") {
+            node.data?.properties?.children?.forEach((child: any) => {
+              if (
+                child.component === "card" &&
+                child.properties?.image &&
+                !isRemoteUrl(child.properties?.image)
+              ) {
+                const uploadedUrl = urlMapping.get(child.properties?.image);
+                if (uploadedUrl) {
+                  child.properties.image = uploadedUrl;
+                } else {
+                  console.warn(
+                    `No uploaded URL found for image: ${decodeURIComponent(child.properties?.image || "")}`,
+                  );
+                }
+              }
+            });
           }
         }
         if (node.children) {
