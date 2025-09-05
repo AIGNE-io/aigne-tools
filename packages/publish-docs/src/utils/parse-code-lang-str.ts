@@ -1,7 +1,7 @@
 export type LangAttrs = {
   icon?: string;
-  foldable?: string; // 是否启用折叠功能
-  foldThreshold?: string; // 折叠阈值，超过此行数自动折叠
+  foldable?: string; // Whether to enable folding functionality
+  foldThreshold?: string; // Folding threshold - auto-fold when line count exceeds this value
 };
 
 /**
@@ -32,7 +32,7 @@ export function parseCodeLangStr(lang: string = "") {
     rest.forEach((part) => {
       const match = part.match(keyValueRegex);
       if (match) {
-        // biome-ignore lint/style/noNonNullAssertion: 需要使用非空断言以保证类型安全
+        // biome-ignore lint/style/noNonNullAssertion: Non-null assertion needed for type safety
         attrs[match[1]! as keyof LangAttrs] = match[2]!;
       } else {
         titleParts.push(part);

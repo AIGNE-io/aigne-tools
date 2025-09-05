@@ -90,7 +90,7 @@ export class Converter {
 
         if (lang === "mermaid") return `<pre class="mermaid">${text}</pre>`;
 
-        // 将 title/icon/其他属性都转成 data-* 属性
+        // Convert title/icon and other attributes to data-* attributes
         const dataAttrs = Object.entries(attrs)
           .map(([k, v]) => `data-${he.encode(k)}="${he.encode(v)}"`)
           .join(" ");
