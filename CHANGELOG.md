@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.3](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.9.2...aigne-tools-v0.9.3) (2025-09-05)
+
+
+### Bug Fixes
+
+* **publish-docs:** parse markdown code blocks into custom x-code element ([#7](https://github.com/AIGNE-io/aigne-tools/issues/7)) ([4845b1f](https://github.com/AIGNE-io/aigne-tools/commit/4845b1f80a9390d69a39dbe2f8c2603f20df40b0))
+
 ## [0.9.2](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.1.2...aigne-tools-v0.9.2) (2025-09-05)
 
 
