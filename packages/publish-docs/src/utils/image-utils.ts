@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import sizeOf from "image-size";
+import { imageSize } from "image-size";
 import { isRemoteUrl } from "./image-finder.js";
 
 export interface ImageDimensions {
@@ -31,7 +31,7 @@ export function getImageDimensions(filePath: string): ImageDimensions | null {
 
     // Read file as buffer to ensure compatibility with image-size
     const buffer = readFileSync(filePath);
-    const dimensions = sizeOf(buffer);
+    const dimensions = imageSize(buffer);
 
     if (dimensions.width && dimensions.height) {
       return {
