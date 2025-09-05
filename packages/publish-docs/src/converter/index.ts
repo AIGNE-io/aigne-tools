@@ -265,6 +265,10 @@ export class Converter {
         }
       }
 
+      const warnMissingImageUrl = (imagePath: string) => {
+        console.warn(`No uploaded URL found for image: ${decodeURIComponent(imagePath || "")}`);
+      };
+
       // Update image sources in the content
       const updateImageSources = (node: any): void => {
         if (node.type === "image" && node.src && !isRemoteUrl(node.src)) {
@@ -274,7 +278,7 @@ export class Converter {
           if (uploadedUrl) {
             node.src = uploadedUrl;
           } else {
-            console.warn(`No uploaded URL found for image: ${decodeURIComponent(node.src || "")}`);
+            warnMissingImageUrl(node.src);
           }
 
           // update image width and height
@@ -301,9 +305,7 @@ export class Converter {
             if (uploadedUrl) {
               node.data.properties.image = uploadedUrl;
             } else {
-              console.warn(
-                `No uploaded URL found for image: ${decodeURIComponent(node.data?.properties?.image || "")}`,
-              );
+              warnMissingImageUrl(node.data?.properties?.image);
             }
           }
 
@@ -318,9 +320,7 @@ export class Converter {
                 if (uploadedUrl) {
                   child.properties.image = uploadedUrl;
                 } else {
-                  console.warn(
-                    `No uploaded URL found for image: ${decodeURIComponent(child.properties?.image || "")}`,
-                  );
+                  warnMissingImageUrl(child.properties?.image);
                 }
               }
             });

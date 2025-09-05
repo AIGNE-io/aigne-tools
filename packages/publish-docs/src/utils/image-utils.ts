@@ -42,7 +42,10 @@ export function getImageDimensions(filePath: string): ImageDimensions | null {
 
     return null;
   } catch (error) {
-    console.warn(`Failed to get dimensions for ${filePath}:`, error);
+    console.warn(
+      `Image dimension detection failed for ${filePath}:`,
+      error instanceof Error ? error.message : String(error),
+    );
     return null;
   }
 }

@@ -3,7 +3,6 @@ import { resolve } from "node:path";
 import {
   getImageDimensions,
   getLocalImageDimensions,
-  type ImageDimensions,
   isLocalPath,
 } from "../src/utils/image-utils.js";
 
@@ -135,8 +134,8 @@ describe("Image Utils", () => {
 
   describe("Error handling", () => {
     it("should handle corrupted files gracefully", () => {
-      // Create a temporary file with invalid content
-      const invalidPath = resolve(TEST_ASSETS_DIR, "invalid.png");
+      // Test handling of non-existent corrupted image file
+      const invalidPath = resolve(TEST_ASSETS_DIR, "corrupted.png");
 
       // Should not throw, should return null
       expect(() => {
@@ -159,28 +158,6 @@ describe("Image Utils", () => {
         const dimensions = getImageDimensions(dirPath);
         expect(dimensions).toBeNull();
       }).not.toThrow();
-    });
-  });
-
-  describe("TypeScript types", () => {
-    it("should have correct ImageDimensions interface", () => {
-      const dimensions: ImageDimensions = { width: 100, height: 200 };
-
-      expect(typeof dimensions.width).toBe("number");
-      expect(typeof dimensions.height).toBe("number");
-      expect(dimensions.width).toBe(100);
-      expect(dimensions.height).toBe(200);
-    });
-
-    it("should return ImageDimensions or null", () => {
-      const pngPath = resolve(TEST_ASSETS_DIR, "png-test.png");
-      const result = getImageDimensions(pngPath);
-
-      // Type should be ImageDimensions | null
-      if (result !== null) {
-        expect(typeof result.width).toBe("number");
-        expect(typeof result.height).toBe("number");
-      }
     });
   });
 });

@@ -7,6 +7,10 @@ import { publisher } from "./publisher.js";
 import type { PublishResult } from "./types.js";
 
 function generateSlugPrefix(boardId: string): string {
+  if (!boardId?.trim()) {
+    throw new Error("boardId cannot be empty or whitespace");
+  }
+
   return createHash("sha256").update(boardId).digest("hex").substring(0, 8);
 }
 
