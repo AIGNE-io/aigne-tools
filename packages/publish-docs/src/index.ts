@@ -1,9 +1,14 @@
+import { createHash } from "node:crypto";
 import { z } from "zod";
 import { authenticator } from "./authenticator.js";
 import { findOrCreateBoard } from "./board.js";
 import { Generator } from "./generator.js";
 import { publisher } from "./publisher.js";
 import type { PublishResult } from "./types.js";
+
+function generateSlugPrefix(boardId: string): string {
+  return createHash("sha256").update(boardId).digest("hex").substring(0, 8);
+}
 
 const boardMetaSchema = z
   .object({
@@ -98,7 +103,7 @@ export async function publishDocs(options: PublishDocsOptions): Promise<PublishR
 
   const docs = await new Generator({
     sidebarPath: parsed.sidebarPath,
-    slugPrefix: finalBoardId,
+    slugPrefix: generateSlugPrefix(finalBoardId),
     slugWithoutExt: parsed.slugWithoutExt ?? true,
     uploadConfig: {
       appUrl: parsed.appUrl,
