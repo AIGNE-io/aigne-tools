@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.9.0...publish-docs-v0.9.1) (2025-09-05)
+
+
+### Bug Fixes
+
+* add image dimension detection and  auto-setting for local images ([#4](https://github.com/AIGNE-io/aigne-tools/issues/4)) ([9af95fd](https://github.com/AIGNE-io/aigne-tools/commit/9af95fd0d68a348d7e441402fe460b6a0c158808))
+
 ## [0.9.0](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.8.0...publish-docs-v0.9.0) (2025-09-04)
 
 
