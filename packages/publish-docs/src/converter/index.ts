@@ -97,7 +97,7 @@ export class Converter {
         const [relPathWithoutAnchor, anchor] = normalizedRelPath.split("#");
         const slug = slugify(relPathWithoutAnchor as string, slugWithoutExt);
         usedSlugs[slug] = [...(usedSlugs[slug] ?? []), filePath];
-        return `<a href="${slugPrefix ? `${slugPrefix}-${slug}${anchor ? `#${anchor}` : ""}` : slug}${anchor ? `#${anchor}` : ""}">${marked.parseInline(text)}</a>`;
+        return `<a href="${slugPrefix ? `${slug}-${slugPrefix}${anchor ? `#${anchor}` : ""}` : slug}${anchor ? `#${anchor}` : ""}">${marked.parseInline(text)}</a>`;
       },
       html({ text }) {
         if (text.startsWith("<x-")) {
@@ -107,10 +107,10 @@ export class Converter {
 
           for (const match of dataHrefMatches) {
             const hrefValue = match[1];
-            // If href starts with "/", normalize the path (/aa/bb/cc => <slugPrefix>-aa-bb-cc)
+            // If href starts with "/", normalize the path (/aa/bb/cc => aa-bb-cc-<slugPrefix>)
             if (hrefValue?.startsWith("/")) {
-              const prefix = slugPrefix ? `${slugPrefix}-` : "";
-              const processedHref = prefix + hrefValue.substring(1).replace(/\//g, "-");
+              const prefix = slugPrefix ? `-${slugPrefix}` : "";
+              const processedHref = hrefValue.substring(1).replace(/\//g, "-") + prefix;
               updatedText = updatedText.replace(match[0], `data-href="${processedHref}"`);
             }
           }

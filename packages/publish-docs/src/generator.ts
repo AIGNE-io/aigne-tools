@@ -101,7 +101,7 @@ export class Generator {
 
   private async fillInfo(node: DocNode): Promise<void> {
     const slug = this.uniqueSlugify(node.link ?? node.title);
-    node.slug = this.slugPrefix ? `${this.slugPrefix}-${slug}` : slug;
+    node.slug = this.slugPrefix ? `${slug}-${this.slugPrefix}` : slug;
     if (node.link) {
       const filePath = this.resolveLinkFilePath(node.link);
       const info = await this.getInfoFromFile(filePath);

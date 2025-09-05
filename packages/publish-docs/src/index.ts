@@ -11,7 +11,7 @@ function generateSlugPrefix(boardId: string): string {
     throw new Error("boardId cannot be empty or whitespace");
   }
 
-  return createHash("sha256").update(boardId).digest("hex").substring(0, 8);
+  return createHash("sha256").update(boardId).digest("hex").substring(0, 6);
 }
 
 const boardMetaSchema = z
