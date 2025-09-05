@@ -44,7 +44,11 @@ export interface ImagePayload {
 function convertImageElement(domNode: Node): null | DOMConversionOutput {
   if (domNode) {
     const { alt: altText, src } = domNode as HTMLImageElement;
-    const node = $createImageNode({ altText, src });
+
+    const node = $createImageNode({
+      altText,
+      src,
+    });
     return { node };
   }
   return null;

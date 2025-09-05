@@ -47,6 +47,9 @@ importers:
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
+      image-size:
+        specifier: ^2.0.2
+        version: 2.0.2
       jsdom:
         specifier: ^26.1.0
         version: 26.1.0
@@ -90,6 +93,9 @@ importers:
       '@types/react':
         specifier: ^18.0.0
         version: 18.3.24
+      bun-types:
+        specifier: ^1.2.21
+        version: 1.2.21(@types/react@18.3.24)
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
@@ -374,6 +380,11 @@ packages:
   buffer-equal-constant-time@1.0.1:
     resolution: {integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==}
 
+  bun-types@1.2.21:
+    resolution: {integrity: sha512-sa2Tj77Ijc/NTLS0/Odjq/qngmEPZfbfnOERi0KRUYhT9R8M4VBioWVmMWE5GrYbKMc+5lVybXygLdibHaqVqw==}
+    peerDependencies:
+      '@types/react': ^19
+
   bundle-name@4.1.0:
     resolution: {integrity: sha512-tjwM5exMg6BGRI+kNmTntNsvdZS1X8BFYS6tnJ2hdH0kVxM6/eVZ2xy+FqStSWvYmtfFMDLIxurorHwDKfDz5Q==}
     engines: {node: '>=18'}
@@ -640,6 +651,11 @@ packages:
   iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
+
+  image-size@2.0.2:
+    resolution: {integrity: sha512-IRqXKlaXwgSMAMtpNzZa1ZAe8m+Sa1770Dhk8VkSsP9LS+iHD62Zd8FQKs8fbPiagBE7BzoFX23cxFnwshpV6w==}
+    engines: {node: '>=16.x'}
+    hasBin: true
 
   internal-slot@1.1.0:
     resolution: {integrity: sha512-4gd7VpWNQNB4UKKCFFVcp1AVv+FMOgs9NKzjHKusc8jTMhd5eL1NqQqOpE0KzMds804/yHlglp3uxgluOqAPLw==}
@@ -1664,6 +1680,11 @@ snapshots:
 
   buffer-equal-constant-time@1.0.1: {}
 
+  bun-types@1.2.21(@types/react@18.3.24):
+    dependencies:
+      '@types/node': 24.3.0
+      '@types/react': 18.3.24
+
   bundle-name@4.1.0:
     dependencies:
       run-applescript: 7.0.0
@@ -2006,6 +2027,8 @@ snapshots:
   iconv-lite@0.6.3:
     dependencies:
       safer-buffer: 2.1.2
+
+  image-size@2.0.2: {}
 
   internal-slot@1.1.0:
     dependencies:

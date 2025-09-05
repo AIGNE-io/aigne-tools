@@ -18,7 +18,8 @@ import {
   TextNode,
 } from "lexical";
 import { marked, type RendererObject } from "marked";
-import { findLocalImages, isRemoteUrl } from "../utils/image-finder.js";
+import { findImagePath, findLocalImages, isRemoteUrl } from "../utils/image-finder.js";
+import { getLocalImageDimensions } from "../utils/image-utils.js";
 import { slugify } from "../utils/slugify.js";
 import { type UploadFilesOptions, uploadFiles } from "../utils/upload-files.js";
 import { CustomComponentNode } from "./nodes/custom-component-node.js";
@@ -96,7 +97,7 @@ export class Converter {
         const [relPathWithoutAnchor, anchor] = normalizedRelPath.split("#");
         const slug = slugify(relPathWithoutAnchor as string, slugWithoutExt);
         usedSlugs[slug] = [...(usedSlugs[slug] ?? []), filePath];
-        return `<a href="${slugPrefix ? `${slugPrefix}-${slug}${anchor ? `#${anchor}` : ""}` : slug}${anchor ? `#${anchor}` : ""}">${marked.parseInline(text)}</a>`;
+        return `<a href="${slugPrefix ? `${slug}-${slugPrefix}${anchor ? `#${anchor}` : ""}` : slug}${anchor ? `#${anchor}` : ""}">${marked.parseInline(text)}</a>`;
       },
       html({ text }) {
         if (text.startsWith("<x-")) {
@@ -106,10 +107,10 @@ export class Converter {
 
           for (const match of dataHrefMatches) {
             const hrefValue = match[1];
-            // If href starts with "/", normalize the path (/aa/bb/cc => <slugPrefix>-aa-bb-cc)
+            // If href starts with "/", normalize the path (/aa/bb/cc => aa-bb-cc-<slugPrefix>)
             if (hrefValue?.startsWith("/")) {
-              const prefix = slugPrefix ? `${slugPrefix}-` : "";
-              const processedHref = prefix + hrefValue.substring(1).replace(/\//g, "-");
+              const prefix = slugPrefix ? `-${slugPrefix}` : "";
+              const processedHref = hrefValue.substring(1).replace(/\//g, "-") + prefix;
               updatedText = updatedText.replace(match[0], `data-href="${processedHref}"`);
             }
           }
@@ -187,9 +188,35 @@ export class Converter {
     const localImageSources: string[] = [];
 
     const collectImageSources = (node: any): void => {
+      // image node
       if (node.type === "image" && node.src && !isRemoteUrl(node.src)) {
         localImageSources.push(node.src);
       }
+
+      // x-component node
+      if (node.type === "x-component") {
+        // Collect images from custom components
+        if (
+          node.data?.component === "card" &&
+          node.data?.properties?.image &&
+          !isRemoteUrl(node.data?.properties?.image)
+        ) {
+          localImageSources.push(node.data?.properties?.image);
+        }
+
+        if (node.data?.component === "cards") {
+          node.data?.properties?.children?.forEach((child: any) => {
+            if (
+              child.component === "card" &&
+              child.properties?.image &&
+              !isRemoteUrl(child.properties?.image)
+            ) {
+              localImageSources.push(child.properties?.image);
+            }
+          });
+        }
+      }
+
       if (node.children) {
         node.children.forEach(collectImageSources);
       }
@@ -238,14 +265,65 @@ export class Converter {
         }
       }
 
+      const warnMissingImageUrl = (imagePath: string) => {
+        console.warn(`No uploaded URL found for image: ${decodeURIComponent(imagePath || "")}`);
+      };
+
       // Update image sources in the content
       const updateImageSources = (node: any): void => {
         if (node.type === "image" && node.src && !isRemoteUrl(node.src)) {
+          const imageLocalPath = node.src;
+
           const uploadedUrl = urlMapping.get(node.src);
           if (uploadedUrl) {
             node.src = uploadedUrl;
           } else {
-            console.warn(`No uploaded URL found for image: ${decodeURIComponent(node.src || "")}`);
+            warnMissingImageUrl(node.src);
+          }
+
+          // update image width and height
+          const imagePath = findImagePath(imageLocalPath, {
+            mediaFolder: this.uploadConfig?.mediaFolder,
+            markdownFilePath: filePath,
+          });
+          if (imagePath) {
+            const dimensions = getLocalImageDimensions(imagePath);
+            if (dimensions) {
+              node.width = dimensions.width;
+              node.height = dimensions.height;
+            }
+          }
+        }
+
+        if (node.type === "x-component") {
+          if (
+            node.data?.component === "card" &&
+            node.data?.properties?.image &&
+            !isRemoteUrl(node.data?.properties?.image)
+          ) {
+            const uploadedUrl = urlMapping.get(node.data?.properties?.image);
+            if (uploadedUrl) {
+              node.data.properties.image = uploadedUrl;
+            } else {
+              warnMissingImageUrl(node.data?.properties?.image);
+            }
+          }
+
+          if (node.data?.component === "cards") {
+            node.data?.properties?.children?.forEach((child: any) => {
+              if (
+                child.component === "card" &&
+                child.properties?.image &&
+                !isRemoteUrl(child.properties?.image)
+              ) {
+                const uploadedUrl = urlMapping.get(child.properties?.image);
+                if (uploadedUrl) {
+                  child.properties.image = uploadedUrl;
+                } else {
+                  warnMissingImageUrl(child.properties?.image);
+                }
+              }
+            });
           }
         }
         if (node.children) {
