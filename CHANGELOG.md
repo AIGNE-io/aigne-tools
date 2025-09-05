@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.2](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.1.2...aigne-tools-v0.9.2) (2025-09-05)
+
+
+### Miscellaneous Chores
+
+* release 0.9.2 ([7730c0b](https://github.com/AIGNE-io/aigne-tools/commit/7730c0ba7d6bf8594241d6412d2fb1e9ce1f1d7a))
+
 ## [0.1.2](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.1.1...aigne-tools-v0.1.2) (2025-09-05)
 
 

@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.9.2](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.9.2...publish-docs-v0.9.2) (2025-09-05)
+
+
+### Features
+
+* initialize aigne-tools monorepo with publish-docs package ([4e74a99](https://github.com/AIGNE-io/aigne-tools/commit/4e74a99845f3b63e5847e58b16db7bbac54590d5))
+
+
+### Bug Fixes
+
+* add image dimension detection and  auto-setting for local images ([#4](https://github.com/AIGNE-io/aigne-tools/issues/4)) ([9af95fd](https://github.com/AIGNE-io/aigne-tools/commit/9af95fd0d68a348d7e441402fe460b6a0c158808))
+* **core:** more stable publish with retry and concurrency limits ([#2](https://github.com/AIGNE-io/aigne-tools/issues/2)) ([02b1915](https://github.com/AIGNE-io/aigne-tools/commit/02b19150d998175b129d0a7ab653b2f044c6ca62))
+
+
+### Miscellaneous Chores
+
+* release 0.9.2 ([7730c0b](https://github.com/AIGNE-io/aigne-tools/commit/7730c0ba7d6bf8594241d6412d2fb1e9ce1f1d7a))
+
 ## [0.9.1](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.9.0...publish-docs-v0.9.1) (2025-09-05)
 
 
