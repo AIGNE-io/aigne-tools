@@ -7,6 +7,7 @@ import { ListItemNode, ListNode } from "@lexical/list";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
 import matter from "gray-matter";
+import he from "he";
 import { JSDOM } from "jsdom";
 import {
   $getRoot,
@@ -20,6 +21,7 @@ import {
 import { marked, type RendererObject } from "marked";
 import { findImagePath, findLocalImages, isRemoteUrl } from "../utils/image-finder.js";
 import { getLocalImageDimensions } from "../utils/image-utils.js";
+import { parseCodeLangStr } from "../utils/parse-code-lang-str.js";
 import { slugify } from "../utils/slugify.js";
 import { type UploadFilesOptions, uploadFiles } from "../utils/upload-files.js";
 import { CustomComponentNode } from "./nodes/custom-component-node.js";
@@ -83,9 +85,17 @@ export class Converter {
     const slugWithoutExt = this.slugWithoutExt;
 
     const renderer: RendererObject = {
-      code({ text, lang }) {
+      code({ text, lang: rawLang, escaped }) {
+        const { lang, ...attrs } = parseCodeLangStr(rawLang);
+
         if (lang === "mermaid") return `<pre class="mermaid">${text}</pre>`;
-        return false;
+
+        // 将 title/icon/其他属性都转成 data-* 属性
+        const dataAttrs = Object.entries(attrs)
+          .map(([k, v]) => `data-${he.encode(k)}="${he.encode(v)}"`)
+          .join(" ");
+
+        return `<x-code data-language="${lang}" ${dataAttrs}>${escaped ? text : he.encode(text)}</x-code>`;
       },
       link({ href, text }) {
         if (/^(http|https|\/|#|mailto:)/.test(href)) return false;
