@@ -24,7 +24,7 @@ export function parseCodeLangStr(lang: string = "") {
     return { lang: "", title: "" };
   }
 
-  // 提取 lang
+  // Extract language identifier
   const firstSpaceIndex = trimmed.indexOf(" ");
   const langPart = firstSpaceIndex === -1 ? trimmed : trimmed.substring(0, firstSpaceIndex);
   // 忽略 lang 修饰符，如 rust,no-run -> rust
@@ -38,7 +38,7 @@ export function parseCodeLangStr(lang: string = "") {
   let title = "";
   const attrs: LangAttrs = {};
 
-  // 解析剩余部分，支持带引号的值
+  // Parse remaining text, supporting quoted and unquoted attribute values
   const keyValueRegex = /(\w+)=(?:"([^"]*)"|'([^']*)'|(\S+))/g;
   let match: RegExpExecArray | null;
   let lastIndex = 0;
@@ -46,13 +46,13 @@ export function parseCodeLangStr(lang: string = "") {
 
   match = keyValueRegex.exec(rest);
   while (match !== null) {
-    // 添加匹配前的文本到标题部分
+    // Add text before the match to title parts
     const beforeMatch = rest.substring(lastIndex, match.index).trim();
     if (beforeMatch) {
       titleParts.push(beforeMatch);
     }
 
-    // 提取属性值
+    // Extract attribute value
     const value = match[2] ?? match[3] ?? match[4];
     // biome-ignore lint/style/noNonNullAssertion: Non-null assertion needed for type safety
     attrs[match[1]! as keyof LangAttrs] = value!;
@@ -61,7 +61,7 @@ export function parseCodeLangStr(lang: string = "") {
     match = keyValueRegex.exec(rest);
   }
 
-  // 添加最后剩余的文本到标题部分
+  // Add remaining text to title parts
   const remaining = rest.substring(lastIndex).trim();
   if (remaining) {
     titleParts.push(remaining);

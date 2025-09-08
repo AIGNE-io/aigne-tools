@@ -18,7 +18,7 @@ describe("parseCodeLangStr", () => {
     });
   });
 
-  it("should parse language with multiple word title", () => {
+  it("should parse language identifier with a multi-word title", () => {
     const result = parseCodeLangStr("js My JavaScript Title");
     expect(result).toEqual({
       lang: "js",
@@ -82,7 +82,9 @@ describe("parseCodeLangStr", () => {
   });
 
   it("should parse language with complex attributes using double quotes", () => {
-    const result = parseCodeLangStr('js title="Complex Title" icon="mdi:javascript" foldable=true foldThreshold=10');
+    const result = parseCodeLangStr(
+      'js title="Complex Title" icon="mdi:javascript" foldable=true foldThreshold=10',
+    );
     expect(result).toEqual({
       lang: "js",
       title: "Complex Title",
@@ -93,7 +95,9 @@ describe("parseCodeLangStr", () => {
   });
 
   it("should parse language with complex attributes using single quotes", () => {
-    const result = parseCodeLangStr("js title='Complex Title' icon='mdi:javascript' foldable=true foldThreshold=10");
+    const result = parseCodeLangStr(
+      "js title='Complex Title' icon='mdi:javascript' foldable=true foldThreshold=10",
+    );
     expect(result).toEqual({
       lang: "js",
       title: "Complex Title",
@@ -104,7 +108,9 @@ describe("parseCodeLangStr", () => {
   });
 
   it("should parse language with mixed single and double quotes", () => {
-    const result = parseCodeLangStr('js title="Complex Title" icon=\'mdi:javascript\' foldable=true');
+    const result = parseCodeLangStr(
+      "js title=\"Complex Title\" icon='mdi:javascript' foldable=true",
+    );
     expect(result).toEqual({
       lang: "js",
       title: "Complex Title",
@@ -139,7 +145,7 @@ describe("parseCodeLangStr", () => {
   });
 
   it("should handle nested quotes in double-quoted values", () => {
-    const result = parseCodeLangStr('js title="He said \'Hello World\'" icon=langs:js');
+    const result = parseCodeLangStr("js title=\"He said 'Hello World'\" icon=langs:js");
     expect(result).toEqual({
       lang: "js",
       title: "He said 'Hello World'",
@@ -148,7 +154,7 @@ describe("parseCodeLangStr", () => {
   });
 
   it("should handle nested quotes in single-quoted values", () => {
-    const result = parseCodeLangStr('js title=\'He said "Hello World"\' icon=langs:js');
+    const result = parseCodeLangStr("js title='He said \"Hello World\"' icon=langs:js");
     expect(result).toEqual({
       lang: "js",
       title: 'He said "Hello World"',
@@ -182,7 +188,9 @@ describe("parseCodeLangStr", () => {
   });
 
   it("should handle extension syntax with complex attributes", () => {
-    const result = parseCodeLangStr('go,no-run,ignore title="Go Example" icon=\'mdi:go\' foldable=true');
+    const result = parseCodeLangStr(
+      "go,no-run,ignore title=\"Go Example\" icon='mdi:go' foldable=true",
+    );
     expect(result).toEqual({
       lang: "go",
       title: "Go Example",
