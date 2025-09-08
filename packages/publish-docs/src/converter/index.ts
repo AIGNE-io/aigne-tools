@@ -235,17 +235,18 @@ export class Converter {
 
     content.root.children.forEach(collectImageSources);
 
-    if (localImageSources.length === 0) return;
+    let localImageFiles: string[] = [];
+    let foundImagePaths: Map<string, string> = new Map();
 
-    // Find local image files
-    const imageSearchResult = findLocalImages(localImageSources, {
-      mediaFolder: this.uploadConfig.mediaFolder,
-      markdownFilePath: filePath,
-    });
-    const foundImagePaths = imageSearchResult.foundPaths;
-    const localImageFiles = Array.from(foundImagePaths.values());
-
-    if (localImageFiles.length === 0) return;
+    if (localImageSources.length > 0) {
+      // Find local image files
+      const imageSearchResult = findLocalImages(localImageSources, {
+        mediaFolder: this.uploadConfig.mediaFolder,
+        markdownFilePath: filePath,
+      });
+      foundImagePaths = imageSearchResult.foundPaths;
+      localImageFiles = Array.from(foundImagePaths.values());
+    }
 
     try {
       // Upload images
