@@ -19,8 +19,9 @@ import {
   TextNode,
 } from "lexical";
 import { marked, type RendererObject } from "marked";
+import pLimit from "p-limit";
 import { findImagePath, findLocalImages, isRemoteUrl } from "../utils/image-finder.js";
-import { getLocalImageDimensions } from "../utils/image-utils.js";
+import { getImageDimensions } from "../utils/image-utils.js";
 import { parseCodeLangStr } from "../utils/parse-code-lang-str.js";
 import { slugify } from "../utils/slugify.js";
 import { type UploadFilesOptions, uploadFiles } from "../utils/upload-files.js";
@@ -279,8 +280,11 @@ export class Converter {
         console.warn(`No uploaded URL found for image: ${decodeURIComponent(imagePath || "")}`);
       };
 
+      // Create a concurrency limit for image processing to avoid overwhelming the system
+      const limit = pLimit(3);
+
       // Update image sources in the content
-      const updateImageSources = (node: any): void => {
+      const updateImageSources = async (node: any): Promise<void> => {
         if (node.type === "image" && node.src && !isRemoteUrl(node.src)) {
           const imageLocalPath = node.src;
 
@@ -297,7 +301,7 @@ export class Converter {
             markdownFilePath: filePath,
           });
           if (imagePath) {
-            const dimensions = getLocalImageDimensions(imagePath);
+            const dimensions = await getImageDimensions(imagePath);
             if (dimensions) {
               node.width = dimensions.width;
               node.height = dimensions.height;
@@ -337,11 +341,15 @@ export class Converter {
           }
         }
         if (node.children) {
-          node.children.forEach(updateImageSources);
+          await Promise.all(
+            node.children.map((child: any) => limit(() => updateImageSources(child))),
+          );
         }
       };
 
-      content.root.children.forEach(updateImageSources);
+      await Promise.all(
+        content.root.children.map((child) => limit(() => updateImageSources(child))),
+      );
     } catch (error) {
       console.warn(`Failed to upload images for ${filePath}:`, error);
     }

@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { imageSize } from "image-size";
+import probe from "probe-image-size";
 import { isRemoteUrl } from "./image-finder.js";
 
 export interface ImageDimensions {
@@ -9,28 +10,44 @@ export interface ImageDimensions {
 }
 
 /**
- * Check if a path is local (not remote URL or data URL)
+ * Get image dimensions for any image source (local files, remote URLs, etc.)
+ *
+ * @param src - Image source: local file path, remote URL, or data URL
+ * @returns Promise resolving to image dimensions or null if unable to determine
  */
-export function isLocalPath(src: string): boolean {
-  return !isRemoteUrl(src) && !src.startsWith("data:");
-}
+export async function getImageDimensions(src: string): Promise<ImageDimensions | null> {
+  // Handle data URLs
+  if (src.startsWith("data:")) {
+    return null; // Data URLs are not supported for dimension detection
+  }
 
-/**
- * Extracts image dimensions from various image file formats using the image-size library.
- *
- * Supported formats: PNG, JPEG, GIF, SVG, WebP, BMP, TIFF, and more.
- *
- * @param filePath - Path to the image file
- * @returns Image dimensions or null if unable to determine
- */
-export function getImageDimensions(filePath: string): ImageDimensions | null {
+  // Handle remote URLs
+  if (isRemoteUrl(src)) {
+    try {
+      const result = await probe(src);
+      return {
+        width: result.width,
+        height: result.height,
+      };
+    } catch (error) {
+      console.warn(
+        `Remote image dimension detection failed for ${src}:`,
+        error instanceof Error ? error.message : String(error),
+      );
+      return null;
+    }
+  }
+
+  // Handle local files
   try {
-    if (!existsSync(filePath)) {
+    const resolvedPath = resolve(src);
+
+    if (!existsSync(resolvedPath)) {
       return null;
     }
 
     // Read file as buffer to ensure compatibility with image-size
-    const buffer = readFileSync(filePath);
+    const buffer = readFileSync(resolvedPath);
     const dimensions = imageSize(buffer);
 
     if (dimensions.width && dimensions.height) {
@@ -43,18 +60,9 @@ export function getImageDimensions(filePath: string): ImageDimensions | null {
     return null;
   } catch (error) {
     console.warn(
-      `Image dimension detection failed for ${filePath}:`,
+      `Local image dimension detection failed for ${src}:`,
       error instanceof Error ? error.message : String(error),
     );
     return null;
   }
-}
-
-export function getLocalImageDimensions(src: string): ImageDimensions | null {
-  if (!isLocalPath(src)) {
-    return null;
-  }
-
-  const resolvedPath = resolve(src);
-  return getImageDimensions(resolvedPath);
 }
