@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.5](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.9.4...aigne-tools-v0.9.5) (2025-09-08)
+
+
+### Bug Fixes
+
+* polish image update logic ([#12](https://github.com/AIGNE-io/aigne-tools/issues/12)) ([351713d](https://github.com/AIGNE-io/aigne-tools/commit/351713dadbf3272c7d3fd14c8410ac58174d71d5))
+
 ## [0.9.4](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.9.3...aigne-tools-v0.9.4) (2025-09-08)
 
 
