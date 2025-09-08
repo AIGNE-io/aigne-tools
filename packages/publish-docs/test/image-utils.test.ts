@@ -102,7 +102,7 @@ describe("Image Utils", () => {
 
   describe("Error handling", () => {
     it("should handle corrupted files gracefully", async () => {
-      // Test handling of non-existent corrupted image file
+      // Test handling of corrupted image file
       const invalidPath = resolve(TEST_ASSETS_DIR, "corrupted.png");
 
       // Should not throw, should return null
