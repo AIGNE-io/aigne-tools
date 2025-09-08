@@ -1,119 +1,87 @@
 import { describe, expect, it } from "bun:test";
 import { resolve } from "node:path";
-import {
-  getImageDimensions,
-  getLocalImageDimensions,
-  isLocalPath,
-} from "../src/utils/image-utils.js";
+import { getImageDimensions } from "../src/utils/image-utils.js";
 
 const TEST_ASSETS_DIR = resolve(__dirname, "assets");
 
 describe("Image Utils", () => {
-  describe("isLocalPath", () => {
-    it("should return true for relative paths", () => {
-      expect(isLocalPath("./image.png")).toBe(true);
-      expect(isLocalPath("../image.jpg")).toBe(true);
-      expect(isLocalPath("image.svg")).toBe(true);
-      expect(isLocalPath("folder/image.png")).toBe(true);
-    });
-
-    it("should return true for absolute paths", () => {
-      expect(isLocalPath("/path/to/image.png")).toBe(true);
-      expect(isLocalPath("/Users/user/image.jpg")).toBe(true);
-    });
-
-    it("should return false for HTTP URLs", () => {
-      expect(isLocalPath("http://example.com/image.png")).toBe(false);
-      expect(isLocalPath("https://example.com/image.jpg")).toBe(false);
-    });
-
-    it("should return false for data URLs", () => {
-      expect(
-        isLocalPath(
-          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-        ),
-      ).toBe(false);
-    });
-  });
-
   describe("getImageDimensions", () => {
-    it("should return correct dimensions for PNG image", () => {
+    it("should return correct dimensions for PNG image", async () => {
       const pngPath = resolve(TEST_ASSETS_DIR, "png-test.png");
-      const dimensions = getImageDimensions(pngPath);
+      const dimensions = await getImageDimensions(pngPath);
 
       expect(dimensions).not.toBeNull();
       expect(dimensions?.width).toBe(1378);
       expect(dimensions?.height).toBe(642);
     });
 
-    it("should return correct dimensions for JPEG image", () => {
+    it("should return correct dimensions for JPEG image", async () => {
       const jpgPath = resolve(TEST_ASSETS_DIR, "jpg-test.jpg");
-      const dimensions = getImageDimensions(jpgPath);
+      const dimensions = await getImageDimensions(jpgPath);
 
       expect(dimensions).not.toBeNull();
       expect(dimensions?.width).toBe(1002);
       expect(dimensions?.height).toBe(600);
     });
 
-    it("should return correct dimensions for SVG with explicit width/height", () => {
+    it("should return correct dimensions for SVG with explicit width/height", async () => {
       const svgPath = resolve(TEST_ASSETS_DIR, "svg-test-2.svg");
-      const dimensions = getImageDimensions(svgPath);
+      const dimensions = await getImageDimensions(svgPath);
 
       expect(dimensions).not.toBeNull();
       expect(dimensions?.width).toBe(17);
       expect(dimensions?.height).toBe(17);
     });
 
-    it("should return correct dimensions for SVG with viewBox", () => {
+    it("should return correct dimensions for SVG with viewBox", async () => {
       const svgPath = resolve(TEST_ASSETS_DIR, "svg-test.svg");
-      const dimensions = getImageDimensions(svgPath);
+      const dimensions = await getImageDimensions(svgPath);
 
       expect(dimensions).not.toBeNull();
       expect(dimensions?.width).toBe(1041);
       expect(dimensions?.height).toBe(1519);
     });
 
-    it("should return null for non-existent file", () => {
+    it("should return null for non-existent file", async () => {
       const nonExistentPath = resolve(TEST_ASSETS_DIR, "non-existent.png");
-      const dimensions = getImageDimensions(nonExistentPath);
+      const dimensions = await getImageDimensions(nonExistentPath);
 
       expect(dimensions).toBeNull();
     });
 
-    it("should return null for invalid image file", () => {
+    it("should return null for invalid image file", async () => {
       const invalidPath = resolve(TEST_ASSETS_DIR, "../image-utils.test.ts");
-      const dimensions = getImageDimensions(invalidPath);
+      const dimensions = await getImageDimensions(invalidPath);
 
       expect(dimensions).toBeNull();
     });
-  });
 
-  describe("getLocalImageDimensions", () => {
-    it("should return dimensions for local image paths", () => {
-      const relativePath = "test/assets/png-test.png";
-      const dimensions = getLocalImageDimensions(relativePath);
+    it("should handle remote images", async () => {
+      const remoteUrl =
+        "https://docsmith.aigne.io/image-bin/uploads/def424c20bbdb3c77483894fe0e22819.png";
+      const dimensions = await getImageDimensions(remoteUrl);
 
       expect(dimensions).not.toBeNull();
-      expect(dimensions?.width).toBe(1378);
-      expect(dimensions?.height).toBe(642);
+      expect(dimensions?.width).toBe(3148);
+      expect(dimensions?.height).toBe(1638);
     });
 
-    it("should return null for HTTP URLs", () => {
-      const httpUrl = "https://example.com/image.png";
-      const dimensions = getLocalImageDimensions(httpUrl);
+    it("should return null for HTTP URLs that don't exist", async () => {
+      const httpUrl = "https://example.com/non-existent-image.png";
+      const dimensions = await getImageDimensions(httpUrl);
 
       expect(dimensions).toBeNull();
     });
 
-    it("should return null for data URLs", () => {
+    it("should return null for data URLs", async () => {
       const dataUrl =
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
-      const dimensions = getLocalImageDimensions(dataUrl);
+      const dimensions = await getImageDimensions(dataUrl);
 
       expect(dimensions).toBeNull();
     });
 
-    it("should handle various image formats", () => {
+    it("should handle various image formats", async () => {
       const testCases = [
         { file: "png-test.png", expected: { width: 1378, height: 642 } },
         { file: "jpg-test.jpg", expected: { width: 1002, height: 600 } },
@@ -123,7 +91,7 @@ describe("Image Utils", () => {
 
       for (const testCase of testCases) {
         const relativePath = `test/assets/${testCase.file}`;
-        const dimensions = getLocalImageDimensions(relativePath);
+        const dimensions = await getImageDimensions(relativePath);
 
         expect(dimensions).not.toBeNull();
         expect(dimensions?.width).toBe(testCase.expected.width);
@@ -133,29 +101,29 @@ describe("Image Utils", () => {
   });
 
   describe("Error handling", () => {
-    it("should handle corrupted files gracefully", () => {
-      // Test handling of non-existent corrupted image file
+    it("should handle corrupted files gracefully", async () => {
+      // Test handling of corrupted image file
       const invalidPath = resolve(TEST_ASSETS_DIR, "corrupted.png");
 
       // Should not throw, should return null
-      expect(() => {
-        const dimensions = getImageDimensions(invalidPath);
+      await expect(async () => {
+        const dimensions = await getImageDimensions(invalidPath);
         expect(dimensions).toBeNull();
       }).not.toThrow();
     });
 
-    it("should handle empty file paths", () => {
-      expect(() => {
-        const dimensions = getImageDimensions("");
+    it("should handle empty file paths", async () => {
+      await expect(async () => {
+        const dimensions = await getImageDimensions("");
         expect(dimensions).toBeNull();
       }).not.toThrow();
     });
 
-    it("should handle directory paths", () => {
+    it("should handle directory paths", async () => {
       const dirPath = resolve(TEST_ASSETS_DIR);
 
-      expect(() => {
-        const dimensions = getImageDimensions(dirPath);
+      await expect(async () => {
+        const dimensions = await getImageDimensions(dirPath);
         expect(dimensions).toBeNull();
       }).not.toThrow();
     });
