@@ -15,32 +15,57 @@ export type LangAttrs = {
  * {
  *   lang: 'js',
  *   title: 'MyTitle',
- *   icon: 'material-symbols:javascript'
+ *   icon: 'mdi:javascript'
  * }
  */
 export function parseCodeLangStr(lang: string = "") {
-  const parts = lang.trim().split(/\s+/);
-  const actualLang = parts[0] || "";
+  const trimmed = lang.trim();
+  if (!trimmed) {
+    return { lang: "", title: "" };
+  }
+
+  // 首先提取语言部分
+  const firstSpaceIndex = trimmed.indexOf(" ");
+  const actualLang = firstSpaceIndex === -1 ? trimmed : trimmed.substring(0, firstSpaceIndex);
+
+  if (firstSpaceIndex === -1) {
+    return { lang: actualLang, title: "" };
+  }
+
+  const rest = trimmed.substring(firstSpaceIndex + 1);
   let title = "";
   const attrs: LangAttrs = {};
 
-  if (parts.length > 1) {
-    const rest = parts.slice(1);
-    const keyValueRegex = /^(\w+)=(.+)$/;
+  // 解析剩余部分，支持带引号的值
+  const keyValueRegex = /(\w+)=(?:"([^"]*)"|'([^']*)'|(\S+))/g;
+  let match: RegExpExecArray | null;
+  let lastIndex = 0;
+  const titleParts: string[] = [];
 
-    const titleParts: string[] = [];
-    rest.forEach((part) => {
-      const match = part.match(keyValueRegex);
-      if (match) {
-        // biome-ignore lint/style/noNonNullAssertion: Non-null assertion needed for type safety
-        attrs[match[1]! as keyof LangAttrs] = match[2]!;
-      } else {
-        titleParts.push(part);
-      }
-    });
+  match = keyValueRegex.exec(rest);
+  while (match !== null) {
+    // 添加匹配前的文本到标题部分
+    const beforeMatch = rest.substring(lastIndex, match.index).trim();
+    if (beforeMatch) {
+      titleParts.push(beforeMatch);
+    }
 
-    title = titleParts.join(" ");
+    // 提取属性值
+    const value = match[2] ?? match[3] ?? match[4];
+    // biome-ignore lint/style/noNonNullAssertion: Non-null assertion needed for type safety
+    attrs[match[1]! as keyof LangAttrs] = value!;
+
+    lastIndex = match.index + match[0].length;
+    match = keyValueRegex.exec(rest);
   }
+
+  // 添加最后剩余的文本到标题部分
+  const remaining = rest.substring(lastIndex).trim();
+  if (remaining) {
+    titleParts.push(remaining);
+  }
+
+  title = titleParts.join(" ");
 
   return { lang: actualLang, title, ...attrs };
 }
