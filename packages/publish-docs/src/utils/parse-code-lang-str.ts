@@ -24,9 +24,11 @@ export function parseCodeLangStr(lang: string = "") {
     return { lang: "", title: "" };
   }
 
-  // 首先提取语言部分
+  // 提取 lang
   const firstSpaceIndex = trimmed.indexOf(" ");
-  const actualLang = firstSpaceIndex === -1 ? trimmed : trimmed.substring(0, firstSpaceIndex);
+  const langPart = firstSpaceIndex === -1 ? trimmed : trimmed.substring(0, firstSpaceIndex);
+  // 忽略 lang 修饰符，如 rust,no-run -> rust
+  const actualLang = langPart.split(",")[0] || "";
 
   if (firstSpaceIndex === -1) {
     return { lang: actualLang, title: "" };

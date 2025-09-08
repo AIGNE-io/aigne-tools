@@ -155,4 +155,55 @@ describe("parseCodeLangStr", () => {
       icon: "langs:js",
     });
   });
+
+  it("should ignore extension syntax like ,no-run", () => {
+    const result = parseCodeLangStr("rust,no-run");
+    expect(result).toEqual({
+      lang: "rust",
+      title: "",
+    });
+  });
+
+  it("should ignore extension syntax with title", () => {
+    const result = parseCodeLangStr("rust,no-run My Rust Code");
+    expect(result).toEqual({
+      lang: "rust",
+      title: "My Rust Code",
+    });
+  });
+
+  it("should ignore extension syntax with attributes", () => {
+    const result = parseCodeLangStr('rust,no-run title="Rust Example" icon=mdi:rust');
+    expect(result).toEqual({
+      lang: "rust",
+      title: "Rust Example",
+      icon: "mdi:rust",
+    });
+  });
+
+  it("should handle extension syntax with complex attributes", () => {
+    const result = parseCodeLangStr('go,no-run,ignore title="Go Example" icon=\'mdi:go\' foldable=true');
+    expect(result).toEqual({
+      lang: "go",
+      title: "Go Example",
+      icon: "mdi:go",
+      foldable: "true",
+    });
+  });
+
+  it("should handle empty language with extension syntax", () => {
+    const result = parseCodeLangStr(",no-run");
+    expect(result).toEqual({
+      lang: "",
+      title: "",
+    });
+  });
+
+  it("should handle language with only comma", () => {
+    const result = parseCodeLangStr("js,");
+    expect(result).toEqual({
+      lang: "js",
+      title: "",
+    });
+  });
 });
