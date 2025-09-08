@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.4](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.9.3...publish-docs-v0.9.4) (2025-09-08)
+
+
+### Bug Fixes
+
+* add remote image dimension detection ([#9](https://github.com/AIGNE-io/aigne-tools/issues/9)) ([1cf8c38](https://github.com/AIGNE-io/aigne-tools/commit/1cf8c3893c0942d02f7272aee54caf007fd2f690))
+
 ## [0.9.3](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.9.2...publish-docs-v0.9.3) (2025-09-05)
 
 
