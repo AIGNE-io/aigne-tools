@@ -285,22 +285,28 @@ export class Converter {
 
       // Update image sources in the content
       const updateImageSources = async (node: any): Promise<void> => {
-        if (node.type === "image" && node.src && !isRemoteUrl(node.src)) {
-          const imageLocalPath = node.src;
-
-          const uploadedUrl = urlMapping.get(node.src);
-          if (uploadedUrl) {
-            node.src = uploadedUrl;
+        if (node.type === "image" && node.src) {
+          let imagePath: string | null;
+          if (isRemoteUrl(node.src)) {
+            imagePath = node.src;
           } else {
-            warnMissingImageUrl(node.src);
+            const imageLocalPath = node.src;
+
+            const uploadedUrl = urlMapping.get(node.src);
+            if (uploadedUrl) {
+              node.src = uploadedUrl;
+            } else {
+              warnMissingImageUrl(node.src);
+            }
+
+            imagePath = findImagePath(imageLocalPath, {
+              mediaFolder: this.uploadConfig?.mediaFolder,
+              markdownFilePath: filePath,
+            });
           }
 
-          // update image width and height
-          const imagePath = findImagePath(imageLocalPath, {
-            mediaFolder: this.uploadConfig?.mediaFolder,
-            markdownFilePath: filePath,
-          });
           if (imagePath) {
+            // update image width and height
             const dimensions = await getImageDimensions(imagePath);
             if (dimensions) {
               node.width = dimensions.width;
@@ -341,9 +347,7 @@ export class Converter {
           }
         }
         if (node.children) {
-          await Promise.all(
-            node.children.map((child: any) => limit(() => updateImageSources(child))),
-          );
+          await Promise.all(node.children.map((child: any) => updateImageSources(child)));
         }
       };
 
