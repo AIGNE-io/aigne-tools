@@ -27,7 +27,7 @@ export function parseCodeLangStr(lang: string = "") {
   // Extract language identifier
   const firstSpaceIndex = trimmed.indexOf(" ");
   const langPart = firstSpaceIndex === -1 ? trimmed : trimmed.substring(0, firstSpaceIndex);
-  // 忽略 lang 修饰符，如 rust,no-run -> rust
+  // Ignore lang modifiers, e.g. rust,no-run -> rust
   const actualLang = langPart.split(",")[0] || "";
 
   if (firstSpaceIndex === -1) {
