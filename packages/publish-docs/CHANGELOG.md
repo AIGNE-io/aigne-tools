@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.6](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.9.5...publish-docs-v0.9.6) (2025-09-09)
+
+
+### Bug Fixes
+
+* improve code block attribute parsing ([#11](https://github.com/AIGNE-io/aigne-tools/issues/11)) ([289fdd6](https://github.com/AIGNE-io/aigne-tools/commit/289fdd6cc34f2d57720c42c22ee1bb4093495442))
+
 ## [0.9.5](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.9.4...publish-docs-v0.9.5) (2025-09-08)
 
 
