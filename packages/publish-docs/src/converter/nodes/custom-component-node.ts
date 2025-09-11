@@ -107,6 +107,7 @@ export class CustomComponentNode extends DecoratorBlockNode {
       "x-cards": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
       "x-code-group": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
       "x-steps": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
+      "x-field": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
     };
   }
 
