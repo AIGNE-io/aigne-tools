@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.0](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.9.6...publish-docs-v0.10.0) (2025-09-11)
+
+
+### Features
+
+* add support for field custom element ([12fcc3a](https://github.com/AIGNE-io/aigne-tools/commit/12fcc3a67a6cc58068931ca00282a02563d10871))
+* add support for field custom element ([9d71c9c](https://github.com/AIGNE-io/aigne-tools/commit/9d71c9c93f159a34706e65526230c5fbe37518da))
+
 ## [0.9.6](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.9.5...publish-docs-v0.9.6) (2025-09-09)
 
 
