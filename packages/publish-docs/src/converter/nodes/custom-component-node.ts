@@ -59,12 +59,6 @@ function convertCustomComponentElement(domNode: HTMLElement): null | DOMConversi
       );
       if (!hasChildren) {
         properties.body = domNode.textContent?.trim() || "";
-        // properties.children = Array.from(children).map((child) => {
-        //   // Recursively parse to maintain the complete node structure
-        //   const childNode = convertCustomComponentElement(child as HTMLElement);
-        //   const data = (childNode?.node as unknown as CustomComponentNode).getData();
-        //   return { component: data.component, properties: data.properties };
-        // });
       }
 
       const hasInlineMarkdown = domNode.hasAttribute("markdown");

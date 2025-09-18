@@ -132,7 +132,7 @@ export class Converter {
             if (node.nodeType === 1) {
               const el = node;
 
-              if (el.hasAttribute("inline-markdown")) {
+              if (el.hasAttribute("markdown")) {
                 el.innerHTML = marked.parseInline(removeIndent(el.textContent || "")) as string;
               } else {
                 Array.from(el.children).forEach(walk);
