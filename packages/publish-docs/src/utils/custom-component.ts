@@ -71,3 +71,16 @@ export function parseCodeLangStr(lang: string = "") {
 
   return { lang: actualLang, title, ...attrs };
 }
+
+/**
+ * 对于多行文本，统一移除最小的空格缩进
+ */
+export function removeIndent(text: string): string {
+  const lines = text.split("\n");
+  const indentLengths = lines
+    .filter((line) => line.trim().length > 0)
+    .map((line) => line.match(/^ */)?.[0].length ?? 0);
+  const minIndent = Math.min(...indentLengths);
+  const trimmedLines = lines.map((line) => line.slice(minIndent));
+  return trimmedLines.join("\n");
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { parseCodeLangStr } from "../src/utils/parse-code-lang-str.js";
+import { parseCodeLangStr, removeIndent } from "../src/utils/custom-component.js";
 
 describe("parseCodeLangStr", () => {
   it("should parse basic language without attributes", () => {
@@ -213,5 +213,122 @@ describe("parseCodeLangStr", () => {
       lang: "js",
       title: "",
     });
+  });
+});
+
+describe("removeIndent", () => {
+  it("should remove common indentation from all lines", () => {
+    const text = `    line1
+    line2
+    line3`;
+    const result = removeIndent(text);
+    expect(result).toBe(`line1
+line2
+line3`);
+  });
+
+  it("should handle mixed indentation levels", () => {
+    const text = `  line1
+    line2
+      line3`;
+    const result = removeIndent(text);
+    expect(result).toBe(`line1
+  line2
+    line3`);
+  });
+
+  it("should handle empty lines", () => {
+    const text = `    line1
+
+    line2
+    `;
+    const result = removeIndent(text);
+    expect(result).toBe(`line1
+
+line2
+`);
+  });
+
+  it("should handle lines with only whitespace", () => {
+    const text = `    line1
+    
+    line2`;
+    const result = removeIndent(text);
+    expect(result).toBe(`line1
+
+line2`);
+  });
+
+  it("should handle single line", () => {
+    const text = "    single line";
+    const result = removeIndent(text);
+    expect(result).toBe("single line");
+  });
+
+  it("should handle empty string", () => {
+    const text = "";
+    const result = removeIndent(text);
+    expect(result).toBe("");
+  });
+
+  it("should handle only whitespace", () => {
+    const text = "   \n  \n";
+    const result = removeIndent(text);
+    expect(result).toBe("\n\n");
+  });
+
+  it("should handle no indentation", () => {
+    const text = `line1
+line2
+line3`;
+    const result = removeIndent(text);
+    expect(result).toBe(`line1
+line2
+line3`);
+  });
+
+
+  it("should handle complex indentation with different levels", () => {
+    const text = `        function test() {
+            if (true) {
+                return "hello";
+            }
+        }`;
+    const result = removeIndent(text);
+    expect(result).toBe(`function test() {
+    if (true) {
+        return "hello";
+    }
+}`);
+  });
+
+  it("should handle lines with zero indentation", () => {
+    const text = `line1
+    line2
+line3`;
+    const result = removeIndent(text);
+    expect(result).toBe(`line1
+    line2
+line3`);
+  });
+
+  it("should preserve trailing whitespace", () => {
+    const text = `    line1    
+    line2    `;
+    const result = removeIndent(text);
+    expect(result).toBe(`line1    
+line2    `);
+  });
+
+  it("should handle multiline string with inconsistent indentation", () => {
+    const text = `  first line
+    second line
+      third line
+  fourth line`;
+    const result = removeIndent(text);
+    expect(result).toBe(`first line
+  second line
+    third line
+fourth line`);
   });
 });

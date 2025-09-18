@@ -38,33 +38,46 @@ function getComponentName(domNode: HTMLElement): string {
   return domNode.tagName.toLowerCase().slice(2);
 }
 
-function domToComponentProperties(domNode: HTMLElement): Record<string, unknown> {
-  const properties: Record<string, unknown> = {
-    component: getComponentName(domNode),
-    ...domNode.dataset,
-  };
-  const { children } = domNode;
-  const hasChildren = Array.from(children).some((child) => isCustomComponent(child as HTMLElement));
-  if (hasChildren) {
-    properties.children = Array.from(children).map((child) => {
-      const childProperties = domToComponentProperties(child as HTMLElement);
-      return { component: childProperties.component, properties: childProperties };
-    });
-  } else {
-    properties.body = domNode.textContent?.trim() || "";
-  }
-  return properties;
-}
-
 function convertCustomComponentElement(domNode: HTMLElement): null | DOMConversionOutput {
   const component = getComponentName(domNode);
   try {
     if (component) {
+      // const properties = domToComponentProperties(domNode);
+      const properties: Record<string, unknown> = {
+        component: getComponentName(domNode),
+        ...domNode.dataset,
+      };
+
       const node = $createCustomComponentNode({
         component,
-        properties: domToComponentProperties(domNode),
+        properties,
       });
-      return { node };
+
+      const { children } = domNode;
+      const hasChildren = Array.from(children).some((child) =>
+        isCustomComponent(child as HTMLElement),
+      );
+      if (hasChildren) {
+        properties.children = Array.from(children).map((child) => {
+          // Recursively parse to maintain the complete node structure
+          const childNode = convertCustomComponentElement(child as HTMLElement);
+          const data = (childNode?.node as unknown as CustomComponentNode).getData();
+          return { component: data.component, properties: data.properties };
+        });
+      } else {
+        properties.body = domNode.textContent?.trim() || "";
+      }
+
+      const hasInlineMarkdown = domNode.hasAttribute("markdown");
+      return {
+        node,
+        after(childLexicalNodes) {
+          if (hasInlineMarkdown && node.__data.properties) {
+            node.__data.properties.childNodes = childLexicalNodes.map((v) => v.exportJSON());
+          }
+          return childLexicalNodes;
+        },
+      };
     }
   } catch (e) {
     console.warn(`Failed to parse: ${component}`, e);
@@ -108,6 +121,8 @@ export class CustomComponentNode extends DecoratorBlockNode {
       "x-code-group": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
       "x-steps": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
       "x-field": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
+      "x-field-group": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
+      "x-field-desc": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
     };
   }
 

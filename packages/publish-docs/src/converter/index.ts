@@ -22,13 +22,12 @@ import { marked, type RendererObject } from "marked";
 import pLimit from "p-limit";
 import { findImagePath, findLocalImages, isRemoteUrl } from "../utils/image-finder.js";
 import { getImageDimensions } from "../utils/image-utils.js";
-import { parseCodeLangStr } from "../utils/parse-code-lang-str.js";
+import { parseCodeLangStr, removeIndent } from "../utils/custom-component.js";
 import { slugify } from "../utils/slugify.js";
 import { type UploadFilesOptions, uploadFiles } from "../utils/upload-files.js";
 import { CustomComponentNode } from "./nodes/custom-component-node.js";
 import { ImageNode } from "./nodes/image-node.js";
 import { MermaidNode } from "./nodes/mermaid-node.js";
-
 export interface ConverterOptions {
   slugPrefix?: string;
   slugWithoutExt?: boolean;
@@ -112,10 +111,9 @@ export class Converter {
       },
       html({ text }) {
         if (text.startsWith("<x-")) {
+          let updatedText = text;
           // Check if text contains data-href attributes and process all of them
           const dataHrefMatches = text.matchAll(/data-href="([^"]+)"/g);
-          let updatedText = text;
-
           for (const match of dataHrefMatches) {
             const hrefValue = match[1];
             // If href starts with "/", normalize the path (/aa/bb/cc => aa-bb-cc-<slugPrefix>)
@@ -126,9 +124,25 @@ export class Converter {
             }
           }
 
-          if (updatedText !== text) {
-            return updatedText;
+          // support parse inline markdown
+          const dom = new JSDOM(updatedText);
+          const { document } = dom.window;
+
+          function walk(node: Element) {
+            if (node.nodeType === 1) {
+              const el = node;
+
+              if (el.hasAttribute("inline-markdown")) {
+                el.innerHTML = marked.parseInline(removeIndent(el.textContent || "")) as string;
+              } else {
+                Array.from(el.children).forEach(walk);
+              }
+            }
           }
+          Array.from(document.body.children).forEach(walk);
+          updatedText = document.body.innerHTML;
+
+          return updatedText;
         }
         return false;
       },
