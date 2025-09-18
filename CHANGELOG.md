@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.11.0](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.10.0...aigne-tools-v0.11.0) (2025-09-18)
+
+
+### Features
+
+* support inline-markdown parsing in custom elements ([29fbd9c](https://github.com/AIGNE-io/aigne-tools/commit/29fbd9ccbfc3ffb056916c14e51bdeda2f48e788))
+* support inline-markdown parsing in custom elements ([50e358c](https://github.com/AIGNE-io/aigne-tools/commit/50e358cd844924561a3f15afb2349ec1a9e71787))
+* support inline-markdown parsing in custom elements ([9f33c1b](https://github.com/AIGNE-io/aigne-tools/commit/9f33c1b55cb43d41d4f5f1321a86a0098b195c9f))
+* support inline-markdown parsing in custom elements ([0e641c7](https://github.com/AIGNE-io/aigne-tools/commit/0e641c72963f74fe176eadcc110f7473ec101ac4))
+
+
+### Bug Fixes
+
+* comments ([f595ae8](https://github.com/AIGNE-io/aigne-tools/commit/f595ae8773769f773ae43e1f5edbc9c6ab790483))
+
 ## [0.10.0](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.9.6...aigne-tools-v0.10.0) (2025-09-11)
 
 
