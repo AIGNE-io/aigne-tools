@@ -73,7 +73,7 @@ export function parseCodeLangStr(lang: string = "") {
 }
 
 /**
- * 对于多行文本，统一移除最小的空格缩进
+ * Removes the minimum common indentation from all lines in a multi-line text
  */
 export function removeIndent(text: string): string {
   const lines = text.split("\n");
