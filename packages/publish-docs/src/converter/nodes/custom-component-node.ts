@@ -57,23 +57,28 @@ function convertCustomComponentElement(domNode: HTMLElement): null | DOMConversi
       const hasChildren = Array.from(children).some((child) =>
         isCustomComponent(child as HTMLElement),
       );
-      if (hasChildren) {
-        properties.children = Array.from(children).map((child) => {
-          // Recursively parse to maintain the complete node structure
-          const childNode = convertCustomComponentElement(child as HTMLElement);
-          const data = (childNode?.node as unknown as CustomComponentNode).getData();
-          return { component: data.component, properties: data.properties };
-        });
-      } else {
+      if (!hasChildren) {
         properties.body = domNode.textContent?.trim() || "";
+        // properties.children = Array.from(children).map((child) => {
+        //   // Recursively parse to maintain the complete node structure
+        //   const childNode = convertCustomComponentElement(child as HTMLElement);
+        //   const data = (childNode?.node as unknown as CustomComponentNode).getData();
+        //   return { component: data.component, properties: data.properties };
+        // });
       }
 
       const hasInlineMarkdown = domNode.hasAttribute("markdown");
       return {
         node,
         after(childLexicalNodes) {
-          if (hasInlineMarkdown && node.__data.properties) {
-            node.__data.properties.childNodes = childLexicalNodes.map((v) => v.exportJSON());
+          if (node.__data.properties) {
+            if (hasInlineMarkdown) {
+              node.__data.properties.childNodes = childLexicalNodes.map((v) => v.exportJSON());
+            } else {
+              node.__data.properties.children = childLexicalNodes
+                .filter((v) => v.__type === "x-component")
+                .map((v) => (v as CustomComponentNode).__data);
+            }
           }
           return childLexicalNodes;
         },

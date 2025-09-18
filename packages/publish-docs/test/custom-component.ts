@@ -287,7 +287,6 @@ line2
 line3`);
   });
 
-
   it("should handle complex indentation with different levels", () => {
     const text = `        function test() {
             if (true) {

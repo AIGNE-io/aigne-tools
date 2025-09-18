@@ -20,9 +20,9 @@ import {
 } from "lexical";
 import { marked, type RendererObject } from "marked";
 import pLimit from "p-limit";
+import { parseCodeLangStr, removeIndent } from "../utils/custom-component.js";
 import { findImagePath, findLocalImages, isRemoteUrl } from "../utils/image-finder.js";
 import { getImageDimensions } from "../utils/image-utils.js";
-import { parseCodeLangStr, removeIndent } from "../utils/custom-component.js";
 import { slugify } from "../utils/slugify.js";
 import { type UploadFilesOptions, uploadFiles } from "../utils/upload-files.js";
 import { CustomComponentNode } from "./nodes/custom-component-node.js";
