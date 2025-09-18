@@ -38,33 +38,45 @@ function getComponentName(domNode: HTMLElement): string {
   return domNode.tagName.toLowerCase().slice(2);
 }
 
-function domToComponentProperties(domNode: HTMLElement): Record<string, unknown> {
-  const properties: Record<string, unknown> = {
-    component: getComponentName(domNode),
-    ...domNode.dataset,
-  };
-  const { children } = domNode;
-  const hasChildren = Array.from(children).some((child) => isCustomComponent(child as HTMLElement));
-  if (hasChildren) {
-    properties.children = Array.from(children).map((child) => {
-      const childProperties = domToComponentProperties(child as HTMLElement);
-      return { component: childProperties.component, properties: childProperties };
-    });
-  } else {
-    properties.body = domNode.textContent?.trim() || "";
-  }
-  return properties;
-}
-
 function convertCustomComponentElement(domNode: HTMLElement): null | DOMConversionOutput {
   const component = getComponentName(domNode);
   try {
     if (component) {
+      // const properties = domToComponentProperties(domNode);
+      const properties: Record<string, unknown> = {
+        component: getComponentName(domNode),
+        ...domNode.dataset,
+      };
+
       const node = $createCustomComponentNode({
         component,
-        properties: domToComponentProperties(domNode),
+        properties,
       });
-      return { node };
+
+      const { children } = domNode;
+      const hasChildren = Array.from(children).some((child) =>
+        isCustomComponent(child as HTMLElement),
+      );
+      if (!hasChildren) {
+        properties.body = domNode.textContent?.trim() || "";
+      }
+
+      const hasInlineMarkdown = domNode.hasAttribute("markdown");
+      return {
+        node,
+        after(childLexicalNodes) {
+          if (node.__data.properties) {
+            if (hasInlineMarkdown) {
+              node.__data.properties.childNodes = childLexicalNodes.map((v) => v.exportJSON());
+            } else {
+              node.__data.properties.children = childLexicalNodes
+                .filter((v) => v.__type === "x-component")
+                .map((v) => (v as CustomComponentNode).__data);
+            }
+          }
+          return childLexicalNodes;
+        },
+      };
     }
   } catch (e) {
     console.warn(`Failed to parse: ${component}`, e);
@@ -108,6 +120,8 @@ export class CustomComponentNode extends DecoratorBlockNode {
       "x-code-group": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
       "x-steps": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
       "x-field": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
+      "x-field-group": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
+      "x-field-desc": () => ({ conversion: convertCustomComponentElement, priority: 1 }),
     };
   }
 
