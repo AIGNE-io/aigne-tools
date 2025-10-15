@@ -20,6 +20,12 @@ const boardMetaSchema = z
     githubRepoUrl: z.string(),
     commitSha: z.string(),
     languages: z.array(z.string()),
+    translation: z
+      .object({
+        title: z.record(z.string()).optional(),
+        desc: z.record(z.string()).optional(),
+      })
+      .optional(),
   })
   .passthrough(); // Allow additional fields to pass through validation
 
