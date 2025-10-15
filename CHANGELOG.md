@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.11.0...aigne-tools-v0.12.0) (2025-10-15)
+
+
+### Features
+
+* support meta translation fields ([#19](https://github.com/AIGNE-io/aigne-tools/issues/19)) ([4144634](https://github.com/AIGNE-io/aigne-tools/commit/41446340afe196250a6928f3d4e5de6527934a69))
+
 ## [0.11.0](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.10.0...aigne-tools-v0.11.0) (2025-09-18)
 
 
