@@ -1,17 +1,17 @@
-import { createHash } from "node:crypto";
-import { z } from "zod";
-import { authenticator } from "./authenticator.js";
-import { findOrCreateBoard } from "./board.js";
-import { Generator } from "./generator.js";
-import { publisher } from "./publisher.js";
-import type { PublishResult } from "./types.js";
+import { createHash } from 'node:crypto';
+import { z } from 'zod';
+import { authenticator } from './authenticator.js';
+import { findOrCreateBoard } from './board.js';
+import { Generator } from './generator.js';
+import { publisher } from './publisher.js';
+import type { PublishResult } from './types.js';
 
 function generateSlugPrefix(boardId: string): string {
   if (!boardId?.trim()) {
-    throw new Error("boardId cannot be empty or whitespace");
+    throw new Error('boardId cannot be empty or whitespace');
   }
 
-  return createHash("sha256").update(boardId).digest("hex").substring(0, 6);
+  return createHash('sha256').update(boardId).digest('hex').substring(0, 6);
 }
 
 const boardMetaSchema = z
@@ -20,6 +20,10 @@ const boardMetaSchema = z
     githubRepoUrl: z.string(),
     commitSha: z.string(),
     languages: z.array(z.string()),
+    translation: z.object({
+      title: z.record(z.string()),
+      desc: z.record(z.string()),
+    }),
   })
   .passthrough(); // Allow additional fields to pass through validation
 
@@ -61,13 +65,13 @@ const optionsSchema = z.union([withTokenSchema, withAuthSchema]);
 export type PublishDocsOptions = z.infer<typeof optionsSchema>;
 
 // Re-export BoardMeta type for external use
-export type { BoardMeta } from "./board.js";
+export type { BoardMeta } from './board.js';
 
 export async function publishDocs(options: PublishDocsOptions): Promise<PublishResult> {
   const parsed = optionsSchema.parse(options);
 
   let accessToken: string;
-  if ("accessToken" in parsed && parsed.accessToken) {
+  if ('accessToken' in parsed && parsed.accessToken) {
     accessToken = parsed.accessToken;
   } else {
     const auth = parsed as z.infer<typeof withAuthSchema>;
@@ -87,13 +91,13 @@ export async function publishDocs(options: PublishDocsOptions): Promise<PublishR
 
   if (parsed.autoCreateBoard) {
     if (!parsed.boardName) {
-      throw new Error("boardName is required when autoCreateBoard is true");
+      throw new Error('boardName is required when autoCreateBoard is true');
     }
 
     finalBoardId = await findOrCreateBoard({
       appUrl: parsed.appUrl,
       accessToken,
-      boardId: parsed.boardId ?? "",
+      boardId: parsed.boardId ?? '',
       boardName: parsed.boardName,
       desc: parsed.boardDesc,
       cover: parsed.boardCover,
@@ -102,7 +106,7 @@ export async function publishDocs(options: PublishDocsOptions): Promise<PublishR
   }
 
   if (!finalBoardId) {
-    throw new Error("boardId is required when autoCreateBoard is false");
+    throw new Error('boardId is required when autoCreateBoard is false');
   }
 
   const docs = await new Generator({
