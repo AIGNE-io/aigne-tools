@@ -66,7 +66,6 @@ export async function publisher(input: {
 
     return { success: true, docs: result.docs, boardId: data.boardId, docsUrl };
   } catch (error) {
-    console.error("Error publishing docs post:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : String(error),
