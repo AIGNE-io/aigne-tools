@@ -36,9 +36,18 @@ export async function publisher(input: {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(
-        `Failed to publish docs post: ${response.status} ${response.statusText} - ${errorText}`,
-      );
+      let msg = "";
+      try {
+        const obj = JSON.parse(errorText);
+        msg = JSON.stringify({
+          ...obj,
+          status: response.status,
+          statusText: response.statusText,
+        });
+      } catch {
+        msg = `Failed to publish docs post: ${response.status} ${response.statusText} - ${errorText}`;
+      }
+      throw new Error(msg);
     }
 
     const result = await response.json();
