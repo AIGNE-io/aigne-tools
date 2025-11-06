@@ -36,16 +36,16 @@ export async function publisher(input: {
 
     if (!response.ok) {
       const errorText = await response.text();
-      let msg = '';
+      let msg = "";
       try {
-          const obj = JSON.parse(errorText);
-          msg = JSON.stringify({
-              ...obj,
-              status: response.status,
-              statusText: response.statusText,
-          });
-      } catch (error) {
-          msg = `Failed to publish docs post: ${response.status} ${response.statusText} - ${errorText}`
+        const obj = JSON.parse(errorText);
+        msg = JSON.stringify({
+          ...obj,
+          status: response.status,
+          statusText: response.statusText,
+        });
+      } catch {
+        msg = `Failed to publish docs post: ${response.status} ${response.statusText} - ${errorText}`;
       }
       throw new Error(msg);
     }
