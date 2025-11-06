@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.12.1](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.12.0...aigne-tools-v0.12.1) (2025-11-06)
+
+
+### Bug Fixes
+
+* improve error handling in publisher function for failed publish responses ([f53a697](https://github.com/AIGNE-io/aigne-tools/commit/f53a697387c380d4d772b12b483556b73f666f5a))
+* improve error handling in publisher function for failed publish responses ([f5579e1](https://github.com/AIGNE-io/aigne-tools/commit/f5579e11678fa266f703ece32d66309e1b0ca528))
+* standardize error message formatting in publisher function ([b0f36f7](https://github.com/AIGNE-io/aigne-tools/commit/b0f36f700f809eb6ec2980aac48457ccfcafc9ba))
+
 ## [0.12.0](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.11.0...aigne-tools-v0.12.0) (2025-10-15)
 
 
