@@ -17,6 +17,7 @@ export interface DocNode {
   slug?: string;
   i18n?: Record<string, { title?: string; content?: string }>;
   labels?: string[];
+  icon?: string;
 }
 
 export interface GeneratorOptions {
@@ -108,6 +109,7 @@ export class Generator {
       if (info?.title) node.h1 = info.title;
       if (info?.content) node.content = JSON.stringify(info.content);
       if (info?.labels) node.labels = info.labels;
+      if (info?.icon) node.icon = info.icon;
 
       const i18n = await this.getI18nInfoFromFile(filePath);
       if (Object.keys(i18n).length > 0) node.i18n = i18n;

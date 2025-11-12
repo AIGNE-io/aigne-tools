@@ -61,12 +61,14 @@ export class Converter {
   ): Promise<{
     title: string | undefined;
     labels?: string[];
+    icon?: string;
     content: SerializedEditorState | null;
   }> {
     const m = matter(markdown);
     let markdownContent = m.content.trim();
 
     const labels = Array.isArray(m.data.labels) ? m.data.labels : undefined;
+    const icon = typeof m.data.icon === "string" ? m.data.icon : undefined;
     let title: string | undefined;
 
     const titleMatch = markdownContent.match(/^#\s+(.+)$/m);
@@ -77,7 +79,7 @@ export class Converter {
 
     if (markdownContent.trim() === "") {
       this.blankFilePaths.push(filePath);
-      return { title, content: null };
+      return { title, labels, icon, content: null };
     }
 
     const slugPrefix = this.slugPrefix;
@@ -203,7 +205,7 @@ export class Converter {
       await this.processImages(content, filePath);
     }
 
-    return { title, labels, content };
+    return { title, labels, icon, content };
   }
 
   private async processImages(content: SerializedEditorState, filePath: string): Promise<void> {
