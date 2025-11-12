@@ -26,6 +26,7 @@ export interface GeneratorOptions {
   slugWithoutExt?: boolean;
   uploadConfig?: ConverterOptions["uploadConfig"];
   concurrency?: number;
+  iconMap?: Record<string, string>; // Map from link or title to icon
 }
 
 export class Generator {
@@ -35,6 +36,7 @@ export class Generator {
   private converter: Converter;
   private slugWithoutExt: boolean;
   private concurrency: number;
+  private iconMap?: Record<string, string>;
 
   constructor(options: GeneratorOptions) {
     this.sidebarPath = options.sidebarPath;
@@ -47,6 +49,7 @@ export class Generator {
     });
     this.slugWithoutExt = options.slugWithoutExt ?? true;
     this.concurrency = options.concurrency ?? 3;
+    this.iconMap = options.iconMap;
   }
 
   private resolveLinkFilePath(link: string): string {
@@ -103,13 +106,24 @@ export class Generator {
   private async fillInfo(node: DocNode): Promise<void> {
     const slug = this.uniqueSlugify(node.link ?? node.title);
     node.slug = this.slugPrefix ? `${slug}-${this.slugPrefix}` : slug;
+
+    // Set icon from iconMap if available (priority: link > title)
+    if (this.iconMap) {
+      if (node.link && this.iconMap[node.link]) {
+        node.icon = this.iconMap[node.link];
+      } else if (this.iconMap[node.title]) {
+        node.icon = this.iconMap[node.title];
+      }
+    }
+
     if (node.link) {
       const filePath = this.resolveLinkFilePath(node.link);
       const info = await this.getInfoFromFile(filePath);
       if (info?.title) node.h1 = info.title;
       if (info?.content) node.content = JSON.stringify(info.content);
       if (info?.labels) node.labels = info.labels;
-      if (info?.icon) node.icon = info.icon;
+      // Only use markdown frontmatter icon if iconMap didn't provide one
+      if (!node.icon && info?.icon) node.icon = info.icon;
 
       const i18n = await this.getI18nInfoFromFile(filePath);
       if (Object.keys(i18n).length > 0) node.i18n = i18n;
