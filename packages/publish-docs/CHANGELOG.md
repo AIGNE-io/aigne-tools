@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.13.0](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.12.1...publish-docs-v0.13.0) (2025-11-12)
+
+
+### Features
+
+* add icon support to DocNode and Converter ([7bd2e17](https://github.com/AIGNE-io/aigne-tools/commit/7bd2e172230d41a9ce0aca3f0f7ebd9ba9b753a5))
+* add icon support to DocNode and Converter ([66f2fdb](https://github.com/AIGNE-io/aigne-tools/commit/66f2fdbd4efd3db2673d98f879689bff1a53d17c))
+
+
+### Bug Fixes
+
+* remove unnecessary whitespace in generator.ts ([ed15bfc](https://github.com/AIGNE-io/aigne-tools/commit/ed15bfc38f28d843a590b7407d0bea559a652eb5))
+
 ## [0.12.1](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.12.0...publish-docs-v0.12.1) (2025-11-06)
 
 
