@@ -42,6 +42,7 @@ const withTokenSchema = z.object({
   boardMeta: boardMetaSchema.optional(),
   mediaFolder: z.string().optional(),
   cacheFilePath: z.string().optional(),
+  iconMap: z.record(z.string()).optional(), // Map from link or title to icon
 });
 
 const withAuthSchema = z.object({
@@ -61,6 +62,7 @@ const withAuthSchema = z.object({
   boardMeta: boardMetaSchema.optional(),
   mediaFolder: z.string().optional(),
   cacheFilePath: z.string().optional(),
+  iconMap: z.record(z.string()).optional(), // Map from link or title to icon
 });
 
 const optionsSchema = z.union([withTokenSchema, withAuthSchema]);
@@ -115,6 +117,7 @@ export async function publishDocs(options: PublishDocsOptions): Promise<PublishR
     sidebarPath: parsed.sidebarPath,
     slugPrefix: generateSlugPrefix(finalBoardId),
     slugWithoutExt: parsed.slugWithoutExt ?? true,
+    iconMap: parsed.iconMap,
     uploadConfig: {
       appUrl: parsed.appUrl,
       accessToken,
