@@ -1,6 +1,4 @@
-import chalk from "chalk";
 import open from "open";
-import terminalLink from "terminal-link";
 import { joinURL } from "ufo";
 import { DISCUSS_KIT_DID } from "./constants.js";
 import type { DocNode } from "./generator.js";
@@ -53,13 +51,6 @@ export async function publisher(input: {
     const result = await response.json();
 
     const docsUrl = joinURL(url.origin, mountPoint, "/docs", data.boardId);
-
-    const boardDisplay = data.boardName || data.boardId;
-    console.log(`Publishing docs collection: ${chalk.cyan(boardDisplay)}`);
-
-    const link = terminalLink.isSupported ? terminalLink(docsUrl, docsUrl) : docsUrl;
-    const docsMessage = `📖 Docs available at: ${chalk.cyan(link)}`;
-    console.log(docsMessage);
 
     // Auto open docs page in browser
     if (autoOpen) {
