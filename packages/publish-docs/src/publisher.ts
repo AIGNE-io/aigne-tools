@@ -64,7 +64,7 @@ export async function publisher(input: {
       }
     }
 
-    return { success: true, docs: result.docs, boardId: data.boardId, docsUrl };
+    return { success: true, docsUrl, docs: result.docs, boardId: data.boardId };
   } catch (error) {
     return {
       success: false,
