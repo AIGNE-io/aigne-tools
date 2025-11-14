@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.13.0...aigne-tools-v0.14.0) (2025-11-14)
+
+
+### Features
+
+* add workflow_dispatch trigger to CI configuration ([3d6b82a](https://github.com/AIGNE-io/aigne-tools/commit/3d6b82abe9b4bb73e2b4ba2cd00efc24df874000))
+
 ## [0.13.0](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.12.1...aigne-tools-v0.13.0) (2025-11-12)
 
 
