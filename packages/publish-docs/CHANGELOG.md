@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.1](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.13.0...publish-docs-v0.13.1) (2025-11-14)
+
+
+### Bug Fixes
+
+* reorder return object properties in publisher function for consistency ([e9566d4](https://github.com/AIGNE-io/aigne-tools/commit/e9566d4cc704c87b1e9dbcbfd22141304982528d))
+* reorder return object properties in publisher function for consistency ([7174100](https://github.com/AIGNE-io/aigne-tools/commit/71741009ccfc312bfcd69b4df074a13db8f64069))
+
 ## [0.13.0](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.12.1...publish-docs-v0.13.0) (2025-11-12)
 
 
