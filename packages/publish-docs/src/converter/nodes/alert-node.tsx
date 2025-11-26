@@ -6,7 +6,9 @@ import type {
   DOMConversionMap,
   DOMConversionOutput,
   DOMExportOutput,
+  EditorConfig,
   ElementFormatType,
+  LexicalEditor,
   LexicalNode,
   NodeKey,
   Spread,
@@ -110,6 +112,10 @@ export class AlertNode extends DecoratorBlockNode {
   setSeverity(severity: AlertColor): void {
     const writable = this.getWritable();
     writable.__severity = severity;
+  }
+
+  override decorate(_editor: LexicalEditor, _config: EditorConfig): JSX.Element {
+    return null as any;
   }
 
   override isInline(): false {

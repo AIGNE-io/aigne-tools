@@ -54,10 +54,10 @@ export const alertExtension = {
   },
   renderer(token: { severity: string; text: string; raw: string; type: string }) {
     const data = JSON.stringify({
-      text: he.encode(token.text),
-      severity: he.encode(token.severity),
+      text: token.text,
+      severity: token.severity,
     });
-    return `<div data-lexical-alert="${data}"></div>\n`;
+    return `<div data-lexical-alert="${he.encode(data)}"></div>\n`;
   },
 };
 
