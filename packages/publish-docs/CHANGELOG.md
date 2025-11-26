@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.14.0](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.13.1...publish-docs-v0.14.0) (2025-11-26)
+
+
+### Features
+
+* marked parsing supports admonition ([5f66733](https://github.com/AIGNE-io/aigne-tools/commit/5f66733f3f8498f1e3251f7eff00d18357b6155e))
+* marked parsing supports admonition ([9041667](https://github.com/AIGNE-io/aigne-tools/commit/9041667edd1830e06442f7100176dee8cf498e4c))
+
+
+### Bug Fixes
+
+* comments ([dc766d6](https://github.com/AIGNE-io/aigne-tools/commit/dc766d63c2c632ff4924c4ed5467807a48e13844))
+* convert error of alert node ([d7a3870](https://github.com/AIGNE-io/aigne-tools/commit/d7a387049837eb47f875406875ab7a9b25dc4634))
+
 ## [0.13.1](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.13.0...publish-docs-v0.13.1) (2025-11-14)
 
 
