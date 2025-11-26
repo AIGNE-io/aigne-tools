@@ -25,9 +25,42 @@ import { findImagePath, findLocalImages, isRemoteUrl } from "../utils/image-find
 import { getImageDimensions } from "../utils/image-utils.js";
 import { slugify } from "../utils/slugify.js";
 import { type UploadFilesOptions, uploadFiles } from "../utils/upload-files.js";
+import { AlertNode } from "./nodes/alert-node.js";
 import { CustomComponentNode } from "./nodes/custom-component-node.js";
 import { ImageNode } from "./nodes/image-node.js";
 import { MermaidNode } from "./nodes/mermaid-node.js";
+
+// Extension for :::severity syntax
+export const alertExtension = {
+  name: "alert",
+  level: "block" as const,
+  start(src: string) {
+    return src.match(/^:::[a-zA-Z0-9_-]+/m)?.index;
+  },
+  tokenizer(src: string) {
+    const rule = /^:::(?<severity>[a-zA-Z0-9_-]+)\s*\n([\s\S]*?)\n:::/;
+    const match = rule.exec(src);
+    if (match) {
+      const severity = match.groups?.severity || "";
+      const text = (match[2] || "").trim();
+      return {
+        type: "alert",
+        raw: match[0],
+        severity,
+        text,
+      };
+    }
+    return undefined;
+  },
+  renderer(token: { severity: string; text: string; raw: string; type: string }) {
+    const data = JSON.stringify({
+      text: token.text,
+      severity: token.severity,
+    });
+    return `<div data-lexical-alert="${he.encode(data)}"></div>\n`;
+  },
+};
+
 export interface ConverterOptions {
   slugPrefix?: string;
   slugWithoutExt?: boolean;
@@ -150,7 +183,7 @@ export class Converter {
       },
     };
 
-    marked.use({ renderer });
+    marked.use({ extensions: [alertExtension], renderer });
     const html = await marked.parse(markdownContent);
 
     const editor = createHeadlessEditor({
@@ -171,6 +204,7 @@ export class Converter {
         MermaidNode,
         TextNode,
         LineBreakNode,
+        AlertNode,
         CustomComponentNode,
       ],
     });

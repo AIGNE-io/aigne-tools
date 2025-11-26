@@ -61,12 +61,12 @@ function convertCustomComponentElement(domNode: HTMLElement): null | DOMConversi
         properties.body = domNode.textContent?.trim() || "";
       }
 
-      const hasInlineMarkdown = domNode.hasAttribute("markdown");
+      const hasMarkdown = domNode.hasAttribute("markdown");
       return {
         node,
         after(childLexicalNodes) {
           if (node.__data.properties) {
-            if (hasInlineMarkdown) {
+            if (hasMarkdown) {
               node.__data.properties.childNodes = childLexicalNodes.map((v) => v.exportJSON());
             } else {
               node.__data.properties.children = childLexicalNodes
