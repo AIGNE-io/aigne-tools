@@ -30,7 +30,7 @@ import { CustomComponentNode } from "./nodes/custom-component-node.js";
 import { ImageNode } from "./nodes/image-node.js";
 import { MermaidNode } from "./nodes/mermaid-node.js";
 
-// Extension for :::alert container syntax
+// Extension for :::severity syntax
 export const alertExtension = {
   name: "alert",
   level: "block" as const,
