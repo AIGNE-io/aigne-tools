@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.15.1](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.15.0...aigne-tools-v0.15.1) (2025-11-27)
+
+
+### Bug Fixes
+
+* enhance the robustness of the alert extension ([e23cd0b](https://github.com/AIGNE-io/aigne-tools/commit/e23cd0b34ee7d4823dd9e0a90db6b2369b85cfc8))
+* enhance the robustness of the alert extension ([8458b74](https://github.com/AIGNE-io/aigne-tools/commit/8458b74afb9e4526c7df65c7bc029f442d04cb58))
+
 ## [0.15.0](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.14.1...aigne-tools-v0.15.0) (2025-11-26)
 
 
