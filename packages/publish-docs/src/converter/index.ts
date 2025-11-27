@@ -38,7 +38,7 @@ export const alertExtension = {
     return src.match(/^:::[a-zA-Z0-9_-]+/m)?.index;
   },
   tokenizer(src: string) {
-    const rule = /^:::(?<severity>[a-zA-Z0-9_-]+)\s*\n([\s\S]*?)\n:::/;
+    const rule = /^:::(?<severity>[a-zA-Z0-9_-]+)[^\n]*\n([\s\S]*?)\n:::/;
     const match = rule.exec(src);
     if (match) {
       const severity = match.groups?.severity || "";
