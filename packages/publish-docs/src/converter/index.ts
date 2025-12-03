@@ -120,6 +120,21 @@ export class Converter {
     const slugWithoutExt = this.slugWithoutExt;
 
     const renderer: RendererObject = {
+      heading({ tokens, depth }) {
+        // Convert codespan tokens to text tokens
+        const processedTokens = tokens.map((token) => {
+          if (token.type === "codespan") {
+            return {
+              type: "text" as const,
+              raw: token.text,
+              text: token.text,
+            };
+          }
+          return token;
+        });
+        const content = this.parser.parseInline(processedTokens);
+        return `<h${depth}>${content}</h${depth}>\n`;
+      },
       code({ text, lang: rawLang, escaped }) {
         const { lang, ...attrs } = parseCodeLangStr(rawLang);
 
