@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.15.2](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.15.1...aigne-tools-v0.15.2) (2025-12-03)
+
+
+### Bug Fixes
+
+* remove inline code block from heading ([0bb138f](https://github.com/AIGNE-io/aigne-tools/commit/0bb138f09028ff2ea831427e0b7b76f50bca4708))
+* remove inline code block from heading ([e88ed9f](https://github.com/AIGNE-io/aigne-tools/commit/e88ed9fcfc04454ec6b5ce090952ca3c4e1c174c))
+
 ## [0.15.1](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.15.0...aigne-tools-v0.15.1) (2025-11-27)
 
 
