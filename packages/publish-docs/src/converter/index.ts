@@ -148,11 +148,29 @@ export class Converter {
         return `<x-code data-language="${lang}" ${dataAttrs}>${escaped ? text : he.encode(text)}</x-code>`;
       },
       link({ href, text }) {
-        if (/^(http|https|\/|#|mailto:)/.test(href)) return false;
+        // Handle remote URLs, anchors, mailto, etc.
+        if (/^(http|https|#|mailto:)/.test(href)) return false;
 
-        const absPath = path.resolve(path.dirname(filePath), href);
         const docsRoot = path.resolve(process.cwd(), process.env.DOC_ROOT_DIR ?? "docs");
-        const relPath = path.relative(docsRoot, absPath);
+        let relPath: string;
+
+        // Handle paths starting with /
+        if (href.startsWith("/")) {
+          // If it's a .md file, treat it as a path relative to docsRoot
+          if (href.endsWith(".md")) {
+            // Remove leading / to get path relative to docsRoot
+            relPath = href.substring(1);
+          } else {
+            // Not a .md file, keep it as is (e.g., /api/endpoint)
+            return false;
+          }
+        } else {
+          // Original logic: relative path, convert to path relative to docsRoot
+          const absPath = path.resolve(path.dirname(filePath), href);
+          relPath = path.relative(docsRoot, absPath);
+        }
+
+        // Unified processing of relPath
         const normalizedRelPath = relPath.replace(/\.([a-zA-Z-]+)\.md$/, ".md");
         const [relPathWithoutAnchor, anchor] = normalizedRelPath.split("#");
         const slug = slugify(relPathWithoutAnchor as string, slugWithoutExt);
