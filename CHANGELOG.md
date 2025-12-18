@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.3](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.15.2...aigne-tools-v0.15.3) (2025-12-18)
+
+
+### Bug Fixes
+
+* improve link handling in Converter class to support remote URLs and enhance path resolution ([#37](https://github.com/AIGNE-io/aigne-tools/issues/37)) ([b8194e3](https://github.com/AIGNE-io/aigne-tools/commit/b8194e3146bbcc66d7cf658fa18bb82d538f0122))
+
 ## [0.15.2](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.15.1...aigne-tools-v0.15.2) (2025-12-03)
 
 
