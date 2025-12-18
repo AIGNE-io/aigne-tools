@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.3](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.14.2...publish-docs-v0.14.3) (2025-12-18)
+
+
+### Bug Fixes
+
+* improve link handling in Converter class to support remote URLs and enhance path resolution ([#37](https://github.com/AIGNE-io/aigne-tools/issues/37)) ([b8194e3](https://github.com/AIGNE-io/aigne-tools/commit/b8194e3146bbcc66d7cf658fa18bb82d538f0122))
+
 ## [0.14.2](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.14.1...publish-docs-v0.14.2) (2025-12-03)
 
 
