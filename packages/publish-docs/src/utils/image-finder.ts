@@ -76,6 +76,10 @@ export function findImagePath(imageSrc: string, options: ImageFinderOptions): st
       path.resolve(process.cwd(), imageSource),
       // 3. Try with markdown file directory as base
       path.resolve(path.dirname(markdownFilePath), imageSource),
+      // 4. Try with markdown file directory without .tmp layer (for published docs)
+      markdownFilePath.includes("/.tmp/")
+        ? path.resolve(path.dirname(markdownFilePath.replace("/.tmp/", "/")), imageSource)
+        : null,
     ].filter(Boolean) as string[];
 
     // Find first existing path
