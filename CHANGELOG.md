@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.15.3...aigne-tools-v0.16.0) (2025-12-25)
+
+
+### Features
+
+* add support for resolving image paths in published docs by handling .tmp directory ([#39](https://github.com/AIGNE-io/aigne-tools/issues/39)) ([ecea93c](https://github.com/AIGNE-io/aigne-tools/commit/ecea93c130346456eaaf3d45244a07e0e9c2e21a))
+
 ## [0.15.3](https://github.com/AIGNE-io/aigne-tools/compare/aigne-tools-v0.15.2...aigne-tools-v0.15.3) (2025-12-18)
 
 
