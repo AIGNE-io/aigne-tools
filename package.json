@@ -1,6 +1,6 @@
 {
   "name": "aigne-tools",
-  "version": "0.15.3",
+  "version": "0.16.0",
   "private": true,
   "description": "AiGNE Tools Monorepo",
   "type": "module",

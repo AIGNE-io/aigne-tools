@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.14.3...publish-docs-v0.15.0) (2025-12-25)
+
+
+### Features
+
+* add support for resolving image paths in published docs by handling .tmp directory ([#39](https://github.com/AIGNE-io/aigne-tools/issues/39)) ([ecea93c](https://github.com/AIGNE-io/aigne-tools/commit/ecea93c130346456eaaf3d45244a07e0e9c2e21a))
+
 ## [0.14.3](https://github.com/AIGNE-io/aigne-tools/compare/publish-docs-v0.14.2...publish-docs-v0.14.3) (2025-12-18)
 
 
